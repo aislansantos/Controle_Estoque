@@ -3,6 +3,7 @@ import customersModel from "../models/CustomerModels";
 class CustomerController {
   // Listagem dos Customers
   index(req, res) {
+    console.log("teste");
     return res
       .status(200)
       .json({ message: "Acessado método listagem Customers" });

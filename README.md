@@ -3,6 +3,8 @@
 Sistema de controle de estoque, para aprofundamento no NodeJS, usando o conceitos de API REST.
 Ferramentas usadas para este projeto:
 
+## Ferramentas e configurações:
+
 * Express - MiniFramework/Lib usado para a crição de API com o NodeJS;
 * Yarn - gestor de pacotes, ao invés do npmn neste projeto está sendo ultilizado o yarn;
 * Postgres - Bando de dados open source;
@@ -19,10 +21,11 @@ Ferramentas usadas para este projeto:
 
 * EsLint - Padronização sintaxe e formatação dos códigos(instruções abaixo) garantindo o bom funcionamento e as boas praticas de programação;
 * Prettier - É um embelezador do código, melhorando a vizualização do código, ex: se vamos usar aspas duplas ou simples.
+* EditorConfig - serve para padronizar os arquivos, caso haja multiplos editores de texto dentro do projeto, por exemplo estamos ultilizando o vsCode, outro elemento do projeto usa o Sublime, com isso cada editor pode ter uma configuração diferente, por exemplo um esta usando o tab para espaçamento o e o outro está considerando dois espaços.
 
 Dessa forma informando pro nodemon rodar o sucrase e reconhecer o modelo de import/export;
 
-## Padrionização
+### Padrionização
 
 Para a padronização dos códigos unificando as sintaxes e formatação, usa-se este tipo de padronização para quando se for trabalhar em equipe toda estilização do código será igual a todos os desenvolvedores envolvidos e para isso vamos ultilizar 3 ferramentas:
 
@@ -59,7 +62,7 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
   }
 ~~~
 
-* EditorConfig - Precisamo ir nas configurações do VS code para configurarmos alguns parametros para o EsLint funcionar corretamente:
+* Configurações VsCode - Precisamo ir nas configurações do VS code para configurarmos alguns parametros para o EsLint funcionar corretamente:
   * Para abrir as configurações pode usar contol + (,) virgúla, ou command + (,) virgúla, dependendo do sistema ou mesmo pela engrenagem no lado inferior esquerdo e depois na opção settings;
     * Vamos editar o arquivo de Json para configurar o VS Code:
 
@@ -83,10 +86,23 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
     // "no-param-reassign": "off", //principalmente quando se usa o ORM sequelize, para sobrescrever os parametros de função.
     //! "camelcase":"off", //em vez de escrever a variavel como minhaVariavel, pode-se tbm usar minha_variavel, também com uso pratico o sequelize
     "no-unused-vars": ["error", { argsIgnorePattern: "next" }], // opção para não der erro quando não for declarado uma variavel, nesse caso para a propria variavel next que é do express e usada nos middlewares.
-    
+
   },
 ~~~
 
 >Depois termido a configuração podemos rodar o processo de fix para pasta inteira do projeto, usando o comando: yarn eslint --fix "pasta_que_quer_verificar" --ext .js.
 
-*Obs: Cuidado para não rodar o comando na pasta node_module!*  
+*Obs: Cuidado para não rodar o comando na pasta node_module!*
+
+* EditorConfig - Vamos instalar a extensão, depois de instalado, na area aonde fica os arquivos, clicar  com o botão direito e clicar na opção generate .editoconfig, deesa forma ele ja vai inicializar por padrão com algumas configurações, ajustar o arquivo para as seguintes configurações:
+
+~~~ editorconfig
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace=true
+insert_final_newline = true
+~~~

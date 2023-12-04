@@ -1,9 +1,11 @@
-const customersModel = require("../models/CustomerModels");
+import customersModel from "../models/CustomerModels";
 
 class CustomerController{
   // Listagem dos Customers
   index(req, res){
-  
+
+
+  return res.status(200).json({message: "Acessado método listagem Customers"})
     
   }
   // Recupera um Customer
@@ -25,4 +27,4 @@ class CustomerController{
   
 }
 
-module.exports = new CustomerController();
+export default new CustomerController();

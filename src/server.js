@@ -1,3 +1,3 @@
-const app = require("express");
+import app from "./app";
 	
-app.listem
+app.listen(3000);

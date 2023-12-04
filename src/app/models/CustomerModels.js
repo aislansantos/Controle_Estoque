@@ -1,7 +1,7 @@
-class CustomerModels{
-  index(req, res ) =>{
+class CustomerModels {
+  index(req, res) {
     const query = "SELECT * FROM cliente";
   }
 }
 
-module.exports= new CustomerModels();
+export default new CustomerModels();

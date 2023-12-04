@@ -86,3 +86,7 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
     
   },
 ~~~
+
+>Depois termido a configuração podemos rodar o processo de fix para pasta inteira do projeto, usando o comando: yarn eslint --fix "pasta_que_quer_verificar" --ext .js.
+
+*Obs: Cuidado para não rodar o comando na pasta node_module!*  

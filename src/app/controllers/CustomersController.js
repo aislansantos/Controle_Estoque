@@ -1,30 +1,24 @@
-import customersModel from '../models/CustomerModels';
+import customersModel from "../models/CustomerModels";
 
 class CustomerController {
   // Listagem dos Customers
-  this.index(req, res) {
-    return res.status(200).json({ message: 'Acessado método listagem Customers' });
+  index(req, res) {
+    return res
+      .status(200)
+      .json({ message: "Acessado método listagem Customers" });
   }
 
   // Recupera um Customer
-  show(req, res) {
-
-  }
+  show(req, res) {}
 
   // Cria um novo Customer
-  create(req, res) {
-
-  }
+  create(req, res) {}
 
   // Atualiza um Customer
-  update(req, res) {
-
-  }
+  update(req, res) {}
 
   // Exclui um Customer
-  destroy(req, res) {
-
-  }
+  destroy(req, res) {}
 }
 
 export default new CustomerController();

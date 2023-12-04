@@ -17,8 +17,8 @@ Ferramentas usadas para este projeto:
 }
 ~~~
 
-* EsLint - Padronização sintaxe e formatação dos códigos(instruções abaixo);
-* Prettier -
+* EsLint - Padronização sintaxe e formatação dos códigos(instruções abaixo) garantindo o bom funcionamento e as boas praticas de programação;
+* Prettier - É um embelezador do código, melhorando a vizualização do código, ex: se vamos usar aspas duplas ou simples.
 
 Dessa forma informando pro nodemon rodar o sucrase e reconhecer o modelo de import/export;
 
@@ -40,7 +40,25 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
     * **Which package manager do you want to use?** - pergunta qual o gestor de pacote estamos usando, nesse caso selecionamos o **yarn**.
       * Depois disso ele faz a instalação e cria o arquivo de configuração .eslintrc.js, uma observação se rodar o npn estiver usando o yarn apagar o arquivo package-lok.json e rodar o comando **yarn** para atualizar os pacotes no arquivo yarn.lock.
     * Na sequencia vamos instalar a extensão EsLint no Visual Code, o EsLint vai trabalhar junto ao VS Code para fazer as devidas correções nos códigos, no momento que salvar o arquivos.
-* Prittier - ;
+
+* Prittier - (**dependencia de desenvolvimento**) É uma ferramenta que vai garantir o embelezamento do código, a instalação se faz da seguinte forma:
+  * yarn add prettier eslint-config-prettier eslint-plugin-prettier -D
+  * Voltamos no .eslintrc.js para fazer alguns ajustes, para arrumar alguns conflitos com o style do **Airbnb**, que selecionamos na instalação e configuração do EsLint:
+
+  ~~~ JavaScript
+    extends: ['airbnb-base', "prettier"], // Criamos um array onde antes só havia o airbnb-base e colocamos o "prettier" no mesmo
+    plugins: ["prettier"], // criamos a seguinte chaven dentro do arquivo
+  ~~~
+
+  * Tem de ser ciardo o prettier dentro da raiz do programa um arquivo chamado .prettierrc, que é o arquivo de configuração do prettier vamos deixar o arquivo da seguinte forma:
+
+ ~~~ JavaScript
+  {
+    "singleQuote": false,
+    "trailingComma": "es5"
+  }
+~~~
+
 * EditorConfig - Precisamo ir nas configurações do VS code para configurarmos alguns parametros para o EsLint funcionar corretamente:
   * Para abrir as configurações pode usar contol + (,) virgúla, ou command + (,) virgúla, dependendo do sistema ou mesmo pela engrenagem no lado inferior esquerdo e depois na opção settings;
     * Vamos editar o arquivo de Json para configurar o VS Code:
@@ -62,8 +80,8 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
 ~~~ javaScript
   rules: {
     "class-method-use-this": "off", //isso significa que não precisamos usar o this, nos metodos de classe.
-    "no-param-reassign": "off", //principalmente quando se usa o ORM sequelize, para sobrescrever os parametros de função.
-    "camelcase":"off", //em vez de escrever a variavel como minhaVariavel, pode-se tbm usar minha_variavel, também com uso pratico o sequelize
+    // "no-param-reassign": "off", //principalmente quando se usa o ORM sequelize, para sobrescrever os parametros de função.
+    //! "camelcase":"off", //em vez de escrever a variavel como minhaVariavel, pode-se tbm usar minha_variavel, também com uso pratico o sequelize
     "no-unused-vars": ["error", { argsIgnorePattern: "next" }], // opção para não der erro quando não for declarado uma variavel, nesse caso para a propria variavel next que é do express e usada nos middlewares.
     
   },

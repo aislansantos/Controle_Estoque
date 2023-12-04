@@ -19,11 +19,13 @@ Ferramentas usadas para este projeto:
 }
 ~~~
 
+Dessa forma informando pro nodemon rodar o sucrase e reconhecer o modelo de import/export;
+
 * EsLint - Padronização sintaxe e formatação dos códigos(instruções abaixo) garantindo o bom funcionamento e as boas praticas de programação;
 * Prettier - É um embelezador do código, melhorando a vizualização do código, ex: se vamos usar aspas duplas ou simples.
 * EditorConfig - serve para padronizar os arquivos, caso haja multiplos editores de texto dentro do projeto, por exemplo estamos ultilizando o vsCode, outro elemento do projeto usa o Sublime, com isso cada editor pode ter uma configuração diferente, por exemplo um esta usando o tab para espaçamento o e o outro está considerando dois espaços.
 
-Dessa forma informando pro nodemon rodar o sucrase e reconhecer o modelo de import/export;
+
 
 ### Padrionização
 

@@ -38,6 +38,33 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
     * **What format do you want your config file to be in?** - Escolhemos qual o formato que vamos exporta esse nosso arquivo de configuração, nesse caso escolheremos o JavaScript.
     * **Would you like to install them now?** ele pergunta se vamos rodar a instalação, colocamos **Yes**;
     * **Which package manager do you want to use?** - pergunta qual o gestor de pacote estamos usando, nesse caso selecionamos o **yarn**.
-        * Depois disso ele faz a instalação e cria o arquivo de configuração .eslintrc.js
+      * Depois disso ele faz a instalação e cria o arquivo de configuração .eslintrc.js, uma observação se rodar o npn estiver usando o yarn apagar o arquivo package-lok.json e rodar o comando **yarn** para atualizar os pacotes no arquivo yarn.lock.
+    * Na sequencia vamos instalar a extensão EsLint no Visual Code, o EsLint vai trabalhar junto ao VS Code para fazer as devidas correções nos códigos, no momento que salvar o arquivos.
 * Prittier - ;
-* EditorConfig - ;
+* EditorConfig - Precisamo ir nas configurações do VS code para configurarmos alguns parametros para o EsLint funcionar corretamente:
+  * Para abrir as configurações pode usar contol + (,) virgúla, ou command + (,) virgúla, dependendo do sistema ou mesmo pela engrenagem no lado inferior esquerdo e depois na opção settings;
+    * Vamos editar o arquivo de Json para configurar o VS Code:
+
+    ~~~ Json
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    ~~~
+
+* Dentro do arquivo arquivo do .eslintrc.js, temos de reescrever algumas regras no campo rules devemos deixar da seguinte forma:
+
+~~~ Json
+  rules: {
+    "class-method-use-this": "off", //isso significa que não precisamos usar o this, nos metodos de classe.
+    "no-param-reassign": "off", //principalmente quando se usa o ORM sequelize, para sobrescrever os parametros de função.
+    "camelcase":"off", //em vez de escrever a variavel como minhaVariavel, pode-se tbm usar minha_variavel, também com uso pratico o sequelize
+    "no-unused-vars": ["error", { argsIgnorePattern: "next" }], // opção para não der erro quando não for declarado uma variavel, nesse caso para a propria variavel next que é do express e usada nos middlewares.
+    
+  },
+~~~

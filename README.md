@@ -22,7 +22,7 @@ Ferramentas usadas para este projeto:
 
 Dessa forma informando pro nodemon rodar o sucrase e reconhecer o modelo de import/export;
 
-#### Padrionização
+## Padrionização
 
 Para a padronização dos códigos unificando as sintaxes e formatação, usa-se este tipo de padronização para quando se for trabalhar em equipe toda estilização do código será igual a todos os desenvolvedores envolvidos e para isso vamos ultilizar 3 ferramentas:
 
@@ -59,7 +59,7 @@ Para a padronização dos códigos unificando as sintaxes e formatação, usa-se
 
 * Dentro do arquivo arquivo do .eslintrc.js, temos de reescrever algumas regras no campo rules devemos deixar da seguinte forma:
 
-~~~ Json
+~~~ javaScript
   rules: {
     "class-method-use-this": "off", //isso significa que não precisamos usar o this, nos metodos de classe.
     "no-param-reassign": "off", //principalmente quando se usa o ORM sequelize, para sobrescrever os parametros de função.

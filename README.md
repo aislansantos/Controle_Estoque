@@ -113,8 +113,8 @@ insert_final_newline = true
 
 ### Customer
 
-Get - /customers;
-Get - /customers/:id;
-Post - /customers;
-Put - /customers/:id;
-Delete - /customers/:id;
+* Get - /customers;
+* Get - /customers/:id;
+* Post - /customers;
+* Put - /customers/:id;
+* Delete - /customers/:id;

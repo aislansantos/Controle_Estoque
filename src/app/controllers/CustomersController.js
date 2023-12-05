@@ -2,15 +2,17 @@ import customersModel from "../models/CustomerModels";
 
 class CustomerController {
   // Listagem dos Customers
-  index(req, res) {
-    console.log("teste");
-    return res
-      .status(200)
-      .json({ message: "Acessado método listagem Customers" });
+  async index(req, res) {
+    const customers = await customersModel.index();
+    return res.status(200).json(customers);
   }
 
   // Recupera um Customer
-  show(req, res) {}
+  async show(req, res) {
+    const { id } = req.params;
+    const customer = await customersModel.show(id);
+    return res.status(200).json(customer);
+  }
 
   // Cria um novo Customer
   create(req, res) {}

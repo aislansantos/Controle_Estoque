@@ -1,26 +1,26 @@
-CREATE TABLE cliente ( 
+CREATE TABLE customer (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
   email VARCHAR(100),
   cidade VARCHAR(100)
 );
 
-CREATE TABLE fornecedor ( 
+CREATE TABLE fornecedor (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE vendedor ( 
+CREATE TABLE vendedor (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE categoria ( 
+CREATE TABLE categoria (
   id SERIAL PRIMARY KEY,
   descricao VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE unidade ( 
+CREATE TABLE unidade (
   id SERIAL PRIMARY KEY,
   descricao VARCHAR(100) NOT NULL
 );

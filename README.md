@@ -1,10 +1,10 @@
 # Controle Estoque
 
 Sistema de controle de estoque, para aprofundamento no NodeJS, usando o conceitos de API REST.
-Ferramentas usadas para este projeto:
 
-## Ferramentas e configurações:
+## Ferramentas e Confisurações Iniciais
 
+* NodeJS
 * Express - MiniFramework/Lib usado para a crição de API com o NodeJS;
 * Yarn - gestor de pacotes, ao invés do npmn neste projeto está sendo ultilizado o yarn;
 * Postgres - Bando de dados open source;
@@ -108,3 +108,13 @@ indent_size = 2
 trim_trailing_whitespace=true
 insert_final_newline = true
 ~~~
+
+## Endpoints
+
+### Customer
+
+Get - /customers;
+Get - /customers/:id;
+Post - /customers;
+Put - /customers/:id;
+Delete - /customers/:id;

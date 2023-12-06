@@ -22,10 +22,19 @@ class CustomerController {
   }
 
   // Atualiza um Customer
-  update(req, res) {}
+  async update(req, res) {
+    const { id } = req.params;
+    const { body } = req;
+    await customersModel.update(id, body);
+    return res.status(200).json({ id_client: id });
+  }
 
   // Exclui um Customer
-  destroy(req, res) {}
+  async destroy(req, res) {
+    const { id } = req.params;
+    await customersModel.destroy(id);
+    return res.status(204).json();
+  }
 }
 
 export default new CustomerController();

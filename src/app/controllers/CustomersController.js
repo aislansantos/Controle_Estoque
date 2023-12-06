@@ -15,7 +15,11 @@ class CustomerController {
   }
 
   // Cria um novo Customer
-  create(req, res) {}
+  async create(req, res) {
+    const { body } = req;
+    await customersModel.create(body);
+    return res.status(201).json({ criado: body.name });
+  }
 
   // Atualiza um Customer
   update(req, res) {}

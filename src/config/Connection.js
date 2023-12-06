@@ -1,11 +1,10 @@
-import conn from "pg";
+import { Client } from "pg";
 
 require("dotenv").config();
 
 class Connection {
-  async conn(command) {
-    console.log(process.env.PG_PASSWORD);
-    const client = new conn.Client({
+  async conn() {
+    const client = await new Client({
       host: process.env.PG_HOST,
       user: process.env.PG_USER,
       port: process.env.PG_PORT,
@@ -14,9 +13,11 @@ class Connection {
     });
 
     await client.connect();
-    const consulta = await client.query(command);
+    // const consulta = await client.query(command);
 
-    return consulta.rows;
+    // return consulta;
+
+    return client;
   }
 }
 

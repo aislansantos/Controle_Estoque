@@ -111,10 +111,18 @@ insert_final_newline = true
 
 Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidade do sistema.
 
-### Customer
+### Customers
 
 * Get - /customers;
 * Get - /customers/:id;
 * Post - /customers;
 * Put - /customers/:id;
 * Delete - /customers/:id;
+
+### Suppliers
+
+* Get - /suppliers;
+* Get - /suppliers/:id;
+* Post - /suppliers;
+* Put - /suppliers/:id;
+* Delete - /suppliers/:id;

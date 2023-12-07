@@ -4,7 +4,7 @@ require("dotenv").config();
 
 class Connection {
   async conn() {
-    const client = await new Client({
+    const client = new Client({
       host: process.env.PG_HOST,
       user: process.env.PG_USER,
       port: process.env.PG_PORT,
@@ -13,9 +13,6 @@ class Connection {
     });
 
     await client.connect();
-    // const consulta = await client.query(command);
-
-    // return consulta;
 
     return client;
   }

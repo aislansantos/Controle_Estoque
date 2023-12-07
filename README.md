@@ -134,3 +134,11 @@ Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidad
 * Post - host/sellers;
 * Put - host/sellers/:id;
 * Delete - host/sellers/:id;
+
+### Category of Products
+
+* Get - host/products/categories;
+* Get - host/products/categories/:id;
+* Post - host/products/categories;
+* Put - host/products/categories/:id;
+* Delete - host/products/categories/:id;

@@ -5,14 +5,15 @@ CREATE TABLE customer (
   cidade VARCHAR(100)
 );
 
-CREATE TABLE fornecedor (
+CREATE TABLE supplier (
   id SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE vendedor (
+CREATE TABLE seller (
   id SERIAL PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL
+  name VARCHAR(100) NOT NULL,
+  branch VARCHAR(100) NOT NULL,
 );
 
 CREATE TABLE categoria (

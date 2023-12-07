@@ -1,8 +1,10 @@
 import { Router } from "express";
 import bodyParser from "body-parser"; //! usado como middleware para ajuste do req.body undefined
+import { checkDescription } from "./app/middleware/productCategoriesMiddleware";
 import customers from "./app/controllers/CustomersController";
-import suppliers from "./app/controllers/SupplierController";
-import sellers from "./app/controllers/SellerController";
+import suppliers from "./app/controllers/SuppliersController";
+import sellers from "./app/controllers/SellersController";
+import productCategoriesController from "./app/controllers/ProductCategoriesController";
 
 const routes = new Router();
 const jsonParser = bodyParser.json();
@@ -27,5 +29,22 @@ routes.get("/sellers/:id", sellers.show);
 routes.post("/sellers", jsonParser, sellers.create);
 routes.put("/sellers/:id", jsonParser, sellers.update);
 routes.delete("/sellers/:id", sellers.destroy);
+
+// Categories of Products
+routes.get("/products/categories", productCategoriesController.index);
+routes.get("/products/categories/:id", productCategoriesController.show);
+routes.post(
+  "/products/categories",
+  jsonParser,
+  checkDescription,
+  productCategoriesController.create
+);
+routes.put(
+  "/products/categories/:id",
+  jsonParser,
+  checkDescription,
+  productCategoriesController.update
+);
+routes.delete("/products/categories/:id", productCategoriesController.destroy);
 
 export default routes;

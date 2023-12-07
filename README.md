@@ -113,16 +113,24 @@ Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidad
 
 ### Customers
 
-* Get - /customers;
-* Get - /customers/:id;
-* Post - /customers;
-* Put - /customers/:id;
-* Delete - /customers/:id;
+* Get - host/customers;
+* Get - host/customers/:id;
+* Post - host/customers;
+* Put - host/customers/:id;
+* Delete - host/customers/:id;
 
 ### Suppliers
 
-* Get - /suppliers;
-* Get - /suppliers/:id;
-* Post - /suppliers;
-* Put - /suppliers/:id;
-* Delete - /suppliers/:id;
+* Get - host/suppliers;
+* Get - host/suppliers/:id;
+* Post - host/suppliers;
+* Put - host/suppliers/:id;
+* Delete - host/suppliers/:id;
+
+### Sellers
+
+* Get - host/sellers;
+* Get - host/sellers/:id;
+* Post - host/sellers;
+* Put - host/sellers/:id;
+* Delete - host/sellers/:id;

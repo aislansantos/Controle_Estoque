@@ -1,6 +1,6 @@
-import supplierModels from "../models/SupplierModels";
+import supplierModels from "../models/Supplier";
 
-class SupplierController {
+class SuppliersController {
   async index(req, res) {
     const suppliers = await supplierModels.index();
     return res.status(200).json(suppliers);
@@ -32,4 +32,4 @@ class SupplierController {
   }
 }
 
-export default new SupplierController();
+export default new SuppliersController();

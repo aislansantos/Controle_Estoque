@@ -1,6 +1,6 @@
-import customersModel from "../models/CustomerModels";
+import customersModel from "../models/Customer";
 
-class CustomerController {
+class CustomersController {
   async index(req, res) {
     const customers = await customersModel.index();
     return res.status(200).json(customers);
@@ -32,4 +32,4 @@ class CustomerController {
   }
 }
 
-export default new CustomerController();
+export default new CustomersController();

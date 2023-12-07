@@ -1,13 +1,13 @@
 CREATE TABLE customer (
   id SERIAL PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
   email VARCHAR(100),
-  cidade VARCHAR(100)
+  city VARCHAR(100)
 );
 
 CREATE TABLE supplier (
   id SERIAL PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL
+  name VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE seller (
@@ -16,9 +16,9 @@ CREATE TABLE seller (
   branch VARCHAR(100) NOT NULL,
 );
 
-CREATE TABLE categoria (
+CREATE TABLE category (
   id SERIAL PRIMARY KEY,
-  descricao VARCHAR(255) NOT NULL
+  description VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE unidade (

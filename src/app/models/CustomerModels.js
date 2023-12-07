@@ -2,7 +2,7 @@ import connection from "../../config/Connection";
 
 class CustomerModels {
   async index() {
-    const query = await "SELECT * FROM customer ORDER BY id";
+    const query = "SELECT * FROM customer ORDER BY id";
     const conn = await connection.conn();
     const customers = await conn.query(query);
     return customers.rows;
@@ -34,8 +34,8 @@ class CustomerModels {
   async destroy(id) {
     const query = `DELETE FROM customer WHERE id = $1`;
     const conn = await connection.conn();
-    const removedCustomer = await conn.query(query, [id]);
-    return removedCustomer;
+    const destroyedCustomer = await conn.query(query, [id]);
+    return destroyedCustomer;
   }
 }
 

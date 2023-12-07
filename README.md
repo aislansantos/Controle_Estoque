@@ -25,8 +25,6 @@ Dessa forma informando pro nodemon rodar o sucrase e reconhecer o modelo de impo
 * Prettier - É um embelezador do código, melhorando a vizualização do código, ex: se vamos usar aspas duplas ou simples.
 * EditorConfig - serve para padronizar os arquivos, caso haja multiplos editores de texto dentro do projeto, por exemplo estamos ultilizando o vsCode, outro elemento do projeto usa o Sublime, com isso cada editor pode ter uma configuração diferente, por exemplo um esta usando o tab para espaçamento o e o outro está considerando dois espaços.
 
-
-
 ### Padrionização
 
 Para a padronização dos códigos unificando as sintaxes e formatação, usa-se este tipo de padronização para quando se for trabalhar em equipe toda estilização do código será igual a todos os desenvolvedores envolvidos e para isso vamos ultilizar 3 ferramentas:
@@ -110,6 +108,8 @@ insert_final_newline = true
 ~~~
 
 ## Endpoints
+
+Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidade do sistema.
 
 ### Customer
 

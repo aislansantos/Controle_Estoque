@@ -5,6 +5,8 @@ import customers from "./app/controllers/CustomersController";
 import suppliers from "./app/controllers/SuppliersController";
 import sellers from "./app/controllers/SellersController";
 import productCategoriesController from "./app/controllers/ProductCategoriesController";
+import productUnitsController from "./app/controllers/ProductUnitsController";
+import productsController from "./app/controllers/ProductsController";
 
 const routes = new Router();
 const jsonParser = bodyParser.json();
@@ -46,5 +48,19 @@ routes.put(
   productCategoriesController.update
 );
 routes.delete("/products/categories/:id", productCategoriesController.destroy);
+
+// Units of Products
+routes.get("/products/units", productUnitsController.index);
+routes.get("/products/units/:id", productUnitsController.show);
+routes.post("/products/units", jsonParser, productUnitsController.create);
+routes.put("/products/units/:id", jsonParser, productUnitsController.update);
+routes.delete("/products/units/:id", productUnitsController.destroy);
+
+// Products
+routes.get("/products", productsController.index);
+routes.get("/products/:id", productsController.show);
+routes.post("/products", jsonParser, productsController.create);
+routes.put("/products/:id", jsonParser, productsController.update);
+routes.delete("/products/:id", productsController.destroy);
 
 export default routes;

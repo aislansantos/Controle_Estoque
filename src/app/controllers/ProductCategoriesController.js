@@ -2,33 +2,58 @@ import productCategoryModels from "../models/ProductCategory";
 
 class ProductCategoriesController {
   async index(req, res) {
-    const productCategories = await productCategoryModels.index();
-    return res.status(200).json(productCategories);
+    try {
+      const productCategories = await productCategoryModels.index();
+      return res.status(200).json(productCategories);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal error" });
+    }
   }
 
   async show(req, res) {
-    const { id } = req.params;
-    const productCategory = await productCategoryModels.show(id);
-    return res.status(200).json(productCategory);
+    try {
+      const { id } = req.params;
+      const productCategory = await productCategoryModels.show(id);
+      return res.status(200).json(productCategory);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal error" });
+    }
   }
 
   async create(req, res) {
-    const { body } = req;
-    await productCategoryModels.create(body);
-    return res.status(201).json({ criado: body.description });
+    try {
+      const { body } = req;
+      await productCategoryModels.create(body);
+      return res.status(201).json({ criado: body.description });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal error" });
+    }
   }
 
   async update(req, res) {
-    const { id } = req.params;
-    const { body } = req;
-    await productCategoryModels.update(id, body);
-    return res.status(200).json({ id_categoria: id });
+    try {
+      const { id } = req.params;
+      const { body } = req;
+      await productCategoryModels.update(id, body);
+      return res.status(200).json({ id_categoria: id });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal error" });
+    }
   }
 
   async destroy(req, res) {
-    const { id } = req.params;
-    await productCategoryModels.destroy(id);
-    return res.status(204).json();
+    try {
+      const { id } = req.params;
+      await productCategoryModels.destroy(id);
+      return res.status(204).json();
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal error" });
+    }
   }
 }
 

@@ -16,22 +16,22 @@ CREATE TABLE seller (
   branch VARCHAR(100) NOT NULL,
 );
 
-CREATE TABLE category (
+CREATE TABLE product_category (
   id SERIAL PRIMARY KEY,
   description VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE unidade (
+CREATE TABLE product_unit (
   id SERIAL PRIMARY KEY,
-  descricao VARCHAR(100) NOT NULL
+  description VARCHAR(4) NOT NULL
 );
 
-CREATE TABLE produto (
+CREATE TABLE product (
 	id SERIAL PRIMARY KEY,
-	descricao VARCHAR(255),
-	estoque INTEGER NOT NULL,
-	id_unidade INTEGER REFERENCES unidade(id) NOT NULL,
- 	id_categoria INTEGER REFERENCES categoria(id) NOT NULL
+	description VARCHAR(255),
+	amount INTEGER NOT NULL,
+	id_unit INTEGER REFERENCES product_unit(id) NOT NULL,
+ 	id_category INTEGER REFERENCES product_category(id) NOT NULL
 );
 
 CREATE TABLE venda (

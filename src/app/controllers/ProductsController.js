@@ -1,10 +1,10 @@
-import sellerModels from "../models/Seller";
+import productModels from "../models/Product";
 
-class SellersController {
+class ProductsController {
   async index(req, res) {
     try {
-      const sellers = await sellerModels.index();
-      return res.status(200).json(sellers);
+      const products = await productModels.index();
+      return res.status(200).json(products);
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal error" });
@@ -14,8 +14,8 @@ class SellersController {
   async show(req, res) {
     try {
       const { id } = req.params;
-      const seller = await sellerModels.show(id);
-      return res.status(200).json(seller);
+      const product = await productModels.show(id);
+      return res.status(200).json(product);
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal error" });
@@ -25,8 +25,8 @@ class SellersController {
   async create(req, res) {
     try {
       const { body } = req;
-      await sellerModels.create(body);
-      return res.status(201).json({ criado: body.name });
+      await productModels.create(body);
+      return res.status(201).json({ criado: body.description });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal error" });
@@ -37,8 +37,8 @@ class SellersController {
     try {
       const { id } = req.params;
       const { body } = req;
-      await sellerModels.update(id, body);
-      return res.status(200).json({ id_seller: id });
+      await productModels.update(id, body);
+      return res.status(200).json({ id_product: id });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal error" });
@@ -48,7 +48,7 @@ class SellersController {
   async destroy(req, res) {
     try {
       const { id } = req.params;
-      await sellerModels.destroy(id);
+      await productModels.destroy(id);
       return res.status(204).json();
     } catch (error) {
       console.log(error);
@@ -56,4 +56,5 @@ class SellersController {
     }
   }
 }
-export default new SellersController();
+
+export default new ProductsController();

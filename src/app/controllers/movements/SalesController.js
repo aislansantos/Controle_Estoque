@@ -33,9 +33,28 @@ class SaleController {
     }
   }
 
-  async update(req, res) {}
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const { body } = req;
+      const saleUpdated = await salesModels.update(id, body);
+      return res.status(200).json({ saleUpdated, id_sale: id });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 
-  async destroy(req, res) {}
+  async destroy(req, res) {
+    try {
+      const { id } = req.params;
+      await salesModels.destroy(id);
+      return res.status(204).json();
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 
 export default new SaleController();

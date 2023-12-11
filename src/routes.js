@@ -65,7 +65,7 @@ routes.delete("/products/:id", productsController.destroy);
 routes.get("/sales", saleController.index);
 routes.get("/sales/:id", saleController.show);
 routes.post("/sales", jsonParser, saleController.create);
-routes.put("/sales/:id", jsonParser, saleController.update);
+routes.patch("/sales/:id", jsonParser, saleController.update);
 routes.delete("/sales/:id", saleController.destroy);
 
 export default routes;

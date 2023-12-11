@@ -1,3 +1,4 @@
+import { DateTime } from "luxon"; //! essa biblioteca permite alterar as configurações de UTC para colocar a hora de São Paulo.
 import connection from "../../../config/Connection";
 
 class SaleModels {
@@ -37,7 +38,10 @@ class SaleModels {
       fkCustomerId,
       fkSellerId,
     } = sale;
-    const releaseDateUTC = new Date(Date.now()).toUTCString();
+
+    const saoPauloTimeZone = "America/Sao_Paulo";
+
+    const releaseDateUTC = DateTime.now().setZone(saoPauloTimeZone).toISO();
     const conn = await connection.conn();
     const saleCreated = await conn.query(query, [
       orderNumber,
@@ -52,19 +56,33 @@ class SaleModels {
   }
 
   async update(id, sale) {
+    const conn = await connection.conn();
+    const updates = sale;
+    const updateQuery = Object.keys(updates)
+      .map(
+        (key, index) =>
+          `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase()} = $${
+            index + 1
+          }`
+      )
+      .join(", ");
+    const updateValues = Object.values(sale);
     const query = `
-    `;
-    const {
-      orderNumber,
-      saleOrderPs,
-      orderDate,
-      expirationDate,
-      fkCustomerId,
-      fkSellerId,
-    } = sale;
+       UPDATE sale
+       SET  ${updateQuery}
+       WHERE id = $${updateValues.length + 1}
+     `;
+    const saleUpdated = await conn.query(query, [...updateValues, id]);
+
+    return saleUpdated.rowCount;
   }
 
-  async destroy() {}
+  async destroy(id) {
+    const query = "DELETE FROM sale WHERE id = $1";
+    const conn = await connection.conn();
+    const saleDestroyed = await conn.query(query, [id]);
+    return saleDestroyed;
+  }
 }
 
 export default new SaleModels();

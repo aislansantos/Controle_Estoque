@@ -1,4 +1,4 @@
-import supplierModels from "../models/Supplier";
+import supplierModels from "../../models/registrations/Supplier";
 
 class SuppliersController {
   async index(req, res) {
@@ -7,7 +7,7 @@ class SuppliersController {
       return res.status(200).json(suppliers);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -18,7 +18,7 @@ class SuppliersController {
       return res.status(200).json(supplier);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -29,7 +29,7 @@ class SuppliersController {
       return res.status(201).json({ criado: req.body.name });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -41,7 +41,7 @@ class SuppliersController {
       return res.status(200).json({ id_supplier: id });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -52,7 +52,7 @@ class SuppliersController {
       return res.status(204).json();
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }

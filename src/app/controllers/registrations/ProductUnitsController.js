@@ -1,4 +1,4 @@
-import productUnitModels from "../models/ProductUnit";
+import productUnitModels from "../../models/registrations/ProductUnit";
 
 class ProductUnitsController {
   async index(req, res) {
@@ -7,7 +7,7 @@ class ProductUnitsController {
       return res.status(200).json(productUnits);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -18,7 +18,7 @@ class ProductUnitsController {
       return res.status(200).json(productUnit);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -29,7 +29,7 @@ class ProductUnitsController {
       return res.status(201).json({ criado: body.description });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -41,7 +41,7 @@ class ProductUnitsController {
       return res.status(200).json({ id_categoria: id });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -52,7 +52,7 @@ class ProductUnitsController {
       return res.status(204).json();
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }

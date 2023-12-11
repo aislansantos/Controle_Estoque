@@ -109,9 +109,11 @@ insert_final_newline = true
 
 ## Endpoints
 
+### Registrations
+
 Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidade do sistema.
 
-### Customers
+#### Customers
 
 * Get - host/customers;
 * Get - host/customers/:id;
@@ -119,7 +121,7 @@ Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidad
 * Put - host/customers/:id;
 * Delete - host/customers/:id;
 
-### Suppliers
+#### Suppliers
 
 * Get - host/suppliers;
 * Get - host/suppliers/:id;
@@ -127,7 +129,7 @@ Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidad
 * Put - host/suppliers/:id;
 * Delete - host/suppliers/:id;
 
-### Sellers
+#### Sellers
 
 * Get - host/sellers;
 * Get - host/sellers/:id;
@@ -135,10 +137,28 @@ Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidad
 * Put - host/sellers/:id;
 * Delete - host/sellers/:id;
 
-### Category of Products
+#### Category of Products
 
 * Get - host/products/categories;
 * Get - host/products/categories/:id;
 * Post - host/products/categories;
 * Put - host/products/categories/:id;
 * Delete - host/products/categories/:id;
+
+#### Products
+
+* Get - host/products;
+* Get - host/products/:id;
+* Post - host/products;
+* Put - host/products/:id;
+* Delete - host/products/:id;
+
+### Movements
+
+#### Sales
+
+* Get - host/sales;
+* Get - host/sales/:id;
+* Post - host/sales;
+* Put - host/sales/:id;
+* Delete - host/sales/:id;

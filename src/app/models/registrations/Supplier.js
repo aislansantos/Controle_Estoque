@@ -1,4 +1,4 @@
-import connection from "../../config/Connection";
+import connection from "../../../config/Connection";
 
 class SupplierModels {
   async index() {
@@ -24,22 +24,22 @@ class SupplierModels {
   async create(supplier) {
     const query = `
       INSERT
-      INTO supplier (name)
-      VALUES ($1)`;
-    const { name } = supplier;
+      INTO supplier (name, email)
+      VALUES ($1, $2)`;
+    const { name, email } = supplier;
     const conn = await connection.conn();
-    const createdSupplier = await conn.query(query, [name]);
+    const createdSupplier = await conn.query(query, [name, email]);
     return createdSupplier.rowCount;
   }
 
   async update(id, supplier) {
     const query = `
       UPDATE supplier
-      SET name = $1
-      WHERE id = $2`;
-    const { name } = supplier;
+      SET name = $1, email = $2
+      WHERE id = $3`;
+    const { name, email } = supplier;
     const conn = await connection.conn();
-    const updatedSupplier = await conn.query(query, [name, id]);
+    const updatedSupplier = await conn.query(query, [name, email, id]);
     return updatedSupplier;
   }
 

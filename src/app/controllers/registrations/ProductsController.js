@@ -1,4 +1,4 @@
-import productModels from "../models/Product";
+import productModels from "../../models/registrations/Product";
 
 class ProductsController {
   async index(req, res) {
@@ -7,7 +7,7 @@ class ProductsController {
       return res.status(200).json(products);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -18,7 +18,7 @@ class ProductsController {
       return res.status(200).json(product);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -29,7 +29,7 @@ class ProductsController {
       return res.status(201).json({ criado: body.description });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -41,7 +41,7 @@ class ProductsController {
       return res.status(200).json({ id_product: id });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -52,7 +52,7 @@ class ProductsController {
       return res.status(204).json();
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }

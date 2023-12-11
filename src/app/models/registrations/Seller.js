@@ -1,4 +1,4 @@
-import connection from "../../config/Connection";
+import connection from "../../../config/Connection";
 
 class SellerModels {
   async index() {
@@ -24,21 +24,21 @@ class SellerModels {
   async create(seller) {
     const query = `
       INSERT
-      INTO seller (name, branch) VALUES ($1, $2)`;
-    const { name, branch } = seller;
+      INTO seller (name, email, branch) VALUES ($1, $2, $3)`;
+    const { name, email, branch } = seller;
     const conn = await connection.conn();
-    const sellerCreated = await conn.query(query, [name, branch]);
+    const sellerCreated = await conn.query(query, [name, email, branch]);
     return sellerCreated;
   }
 
   async update(id, seller) {
     const query = `
       UPDATE seller
-      SET name = $1, branch = $2
+      SET name = $1, email=$2, branch = $3
       WHERE id = $3`;
-    const { name, branch } = seller;
+    const { name, email, branch } = seller;
     const conn = await connection.conn();
-    const sellerUpdated = await conn.query(query, [name, branch, id]);
+    const sellerUpdated = await conn.query(query, [name, email, branch, id]);
     return sellerUpdated;
   }
 

@@ -1,12 +1,12 @@
 import { Router } from "express";
 import bodyParser from "body-parser"; //! usado como middleware para ajuste do req.body undefined
-import { checkDescription } from "./app/middleware/productCategoriesMiddleware";
-import customers from "./app/controllers/CustomersController";
-import suppliers from "./app/controllers/SuppliersController";
-import sellers from "./app/controllers/SellersController";
-import productCategoriesController from "./app/controllers/ProductCategoriesController";
-import productUnitsController from "./app/controllers/ProductUnitsController";
-import productsController from "./app/controllers/ProductsController";
+import customers from "./app/controllers/registrations/CustomersController";
+import suppliers from "./app/controllers/registrations/SuppliersController";
+import sellers from "./app/controllers/registrations/SellersController";
+import productCategoriesController from "./app/controllers/registrations/ProductCategoriesController";
+import productUnitsController from "./app/controllers/registrations/ProductUnitsController";
+import productsController from "./app/controllers/registrations/ProductsController";
+import saleController from "./app/controllers/movements/SalesController";
 
 const routes = new Router();
 const jsonParser = bodyParser.json();
@@ -38,13 +38,11 @@ routes.get("/products/categories/:id", productCategoriesController.show);
 routes.post(
   "/products/categories",
   jsonParser,
-  checkDescription,
   productCategoriesController.create
 );
 routes.put(
   "/products/categories/:id",
   jsonParser,
-  checkDescription,
   productCategoriesController.update
 );
 routes.delete("/products/categories/:id", productCategoriesController.destroy);
@@ -62,5 +60,12 @@ routes.get("/products/:id", productsController.show);
 routes.post("/products", jsonParser, productsController.create);
 routes.put("/products/:id", jsonParser, productsController.update);
 routes.delete("/products/:id", productsController.destroy);
+
+// Sale
+routes.get("/sales", saleController.index);
+routes.get("/sales/:id", saleController.show);
+routes.post("/sales", jsonParser, saleController.create);
+routes.put("/sales/:id", jsonParser, saleController.update);
+routes.delete("/sales/:id", saleController.destroy);
 
 export default routes;

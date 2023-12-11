@@ -1,4 +1,4 @@
-import connection from "../../config/Connection";
+import connection from "../../../config/Connection";
 
 class CustomerModels {
   async index() {

@@ -1,4 +1,4 @@
-import customersModel from "../models/Customer";
+import customersModel from "../../models/registrations/Customer";
 
 class CustomersController {
   async index(req, res) {
@@ -7,7 +7,7 @@ class CustomersController {
       return res.status(200).json(customers);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -18,7 +18,7 @@ class CustomersController {
       return res.status(200).json(customer);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -29,7 +29,7 @@ class CustomersController {
       return res.status(201).json({ criado: body.name });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -41,7 +41,7 @@ class CustomersController {
       return res.status(200).json({ id_client: id });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -52,7 +52,7 @@ class CustomersController {
       return res.status(204).json();
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 }

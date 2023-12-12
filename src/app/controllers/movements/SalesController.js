@@ -15,6 +15,7 @@ class SalesController {
     try {
       const { id } = req.params;
       const sale = await salesModels.show(id);
+
       return res.status(200).json(sale);
     } catch (error) {
       console.error(error);

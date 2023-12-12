@@ -173,8 +173,8 @@ Seguindo API-REST para a criaçao desse app RESTFUL. visando a melhor usabilidad
 
 #### Items of Sales
 
-* Get - host/sales/:id/items_sales;
-* Get - host/sales/:id/items_sales/:id;
-* Post - host/sales/:id/items_sales;
-* Put - host/sales/:id/items_sales/:id;
-* Delete - host/sales/:id/items_sales/:id;
+* Get - host/sales/:salesId/items_sales;
+* Get - host/sales/:salesId/items_sales/:id;
+* Post - host/sales/:salesId/items_sales;
+* Put - host/sales/:salesId/items_sales/:id;
+* Delete - host/sales/:salesId/items_sales/:id;

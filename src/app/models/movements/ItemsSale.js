@@ -27,20 +27,24 @@ class ItemSaleModels {
     return itemSales.rows;
   }
 
-  async create(itenVenda) {
-    console.log(itenVenda);
+  async create(salesId, itenVenda) {
     const query = `
       INSERT INTO sale_item (quantity_item, unitary_value, total_value, fk_sale_id, fk_product_id)
       VALUES ($1, $2, $3, $4, $5)`;
-    const { quantityItem, unitaryValue, fkSaleId, fkProductId } = itenVenda;
+    const { quantityItem, unitaryValue, fkProductId } = itenVenda;
     const totalValue = quantityItem * unitaryValue;
     const itemSalesCreated = await connection.query(query, [
       quantityItem,
       unitaryValue,
       totalValue,
-      fkSaleId,
+      salesId,
       fkProductId,
     ]);
+    const queryUpdateAmount = `
+      UPDATE product
+      SET amount = amount - $1
+      WHERE id = $2`;
+    await connection.query(queryUpdateAmount, [quantityItem, fkProductId]);
     return itemSalesCreated.rows;
   }
 

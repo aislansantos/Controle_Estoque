@@ -27,8 +27,9 @@ class ItensSalesController {
 
   async create(req, res) {
     try {
+      const { salesId } = req.params;
       const { body } = req;
-      await itemsSaleModels.create(body);
+      await itemsSaleModels.create(salesId, body);
 
       return res.status(201).json({ criado: body });
     } catch (error) {

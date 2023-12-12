@@ -135,9 +135,9 @@ CREATE TABLE product (
   -- Quantidade do produto (não pode ser nula)
   amount INTEGER NOT NULL,
   -- Identificador da unidade do produto (referência à tabela product_unit)
-  id_unit INTEGER REFERENCES product_unit(id) NOT NULL,
+  fk_id_unit INTEGER REFERENCES product_unit(id) NOT NULL,
   -- Identificador da categoria do produto (referência à tabela product_category)
-  id_category INTEGER REFERENCES product_category(id) NOT NULL
+  fk_id_category INTEGER REFERENCES product_category(id) NOT NULL
 );
 
 -- Índice para consulta rápida por descrição do produto
@@ -196,11 +196,31 @@ COMMENT ON COLUMN sale.fk_seller_id IS 'Identificador do vendedor associado à v
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
-CREATE TABLE item_venda (
-	id SERIAL PRIMARY KEY,
-	quantidade INTEGER NOT NULL,
-	valor_unit DECIMAL NOT NULL,
-	valor_total DECIMAL NOT NULL,
-	id_venda INTEGER REFERENCES venda(id) NOT NULL,
-	id_produto INTEGER REFERENCES produto(id) NOT NULL
+-- Tabela para armazenar itens de venda
+CREATE TABLE sale_item (
+  -- Identificador único do item de venda
+  id SERIAL PRIMARY KEY,
+  -- Quantidade do produto vendido
+  quantity_item INTEGER NOT NULL,
+  -- Valor unitário do produto
+  unitary_value DECIMAL(10, 2) NOT NULL,
+  -- Valor total do item de venda
+  total_value DECIMAL(10, 2) NOT NULL,
+  -- Chave estrangeira referenciando a tabela de vendas
+  fk_sale_id INTEGER REFERENCES sale(id) ON DELETE CASCADE NOT NULL,
+  -- Chave estrangeira referenciando a tabela de produtos
+  fk_product_id INTEGER REFERENCES product(id) ON DELETE CASCADE NOT NULL
 );
+
+-- Índices para otimização de consultas
+CREATE INDEX idx_sale_item_fk_sale_id ON sale_item (fk_sale_id);
+CREATE INDEX idx_sale_item_fk_product_id ON sale_item (fk_product_id);
+
+-- Comentários adicionais para documentar a tabela e colunas
+COMMENT ON TABLE sale_item IS 'Tabela para armazenar itens de venda';
+COMMENT ON COLUMN sale_item.id IS 'Identificador único do item de venda';
+COMMENT ON COLUMN sale_item.quantity_item IS 'Quantidade do produto vendido';
+COMMENT ON COLUMN sale_item.unitary_value IS 'Valor unitário do produto';
+COMMENT ON COLUMN sale_item.total_value IS 'Valor total do item de venda';
+COMMENT ON COLUMN sale_item.fk_sale_id IS 'Chave estrangeira para a tabela de vendas';
+COMMENT ON COLUMN sale_item.fk_product_id IS 'Chave estrangeira para a tabela de produtos';

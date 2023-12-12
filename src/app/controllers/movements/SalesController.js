@@ -6,7 +6,7 @@ class SaleController {
       const sales = await salesModels.index();
       return res.status(200).json(sales);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -17,7 +17,7 @@ class SaleController {
       const sale = await salesModels.show(id);
       return res.status(200).json(sale);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -28,7 +28,7 @@ class SaleController {
       await salesModels.create(body);
       return res.status(201).json({ criado: body.orderNumber });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -40,7 +40,7 @@ class SaleController {
       const saleUpdated = await salesModels.update(id, body);
       return res.status(200).json({ saleUpdated, id_sale: id });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }
@@ -51,7 +51,7 @@ class SaleController {
       await salesModels.destroy(id);
       return res.status(204).json();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }

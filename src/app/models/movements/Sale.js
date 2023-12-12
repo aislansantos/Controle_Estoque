@@ -8,25 +8,32 @@ class SaleModels {
     FROM sale sa
     INNER JOIN customer cu ON sa.fk_customer_id = cu.id
     INNER JOIN seller se ON sa.fk_seller_id = se.id`;
+    const sales = await connection.query(query);
 
-    const conn = await connection.conn();
-
-    try {
-      const sales = await conn.query(query);
-      return sales.rows;
-    } finally {
-      await conn.end();
-    }
+    return sales.rows;
   }
 
   async show(id) {
     const query = `
-      SELECT sa.id, sa.order_number, sa.sale_order_ps, sa.order_date, sa.release_date, sa.expiration_date, cu.id as id_customer, cu.name as customer, se.id as id_seller, se.name as seller
-      FROM sale sa
-      INNER JOIN customer cu ON sa.fk_customer_id = cu.id
-      INNER JOIN seller se ON sa.fk_seller_id = se.id
-      WHERE sa.id = $1`;
-
+      SELECT
+      DISTINCT ON (sa.id)
+      sa.id,
+      sa.order_number,
+      sa.sale_order_ps,
+      sa.order_date,
+      sa.release_date,
+      sa.expiration_date,
+      cu.id as id_customer,
+      cu.name as customer,
+      se.id as id_seller,
+      se.name as seller,
+      SUM(si.total_value) OVER (PARTITION BY si.fk_sale_id) AS total_sale
+    FROM sale sa
+    INNER JOIN customer cu ON sa.fk_customer_id = cu.id
+    INNER JOIN seller se ON sa.fk_seller_id = se.id
+    INNER JOIN sale_item si ON si.fk_sale_id = sa.id
+    WHERE sa.id = $1
+    ORDER BY sa.id;`;
     const queryItens = `
       SELECT pr.id, pr.description as product, si.quantity_item, si.unitary_value, si.total_value
       FROM sale_item si
@@ -35,28 +42,16 @@ class SaleModels {
       INNER JOIN product_category pc ON pr.fk_id_category = pc.id
       INNER JOIN sale sa ON si.fk_sale_id = sa.id
       WHERE si.fk_sale_id = $1;`;
+    // Executar a consulta para obter os dados da venda
+    const saleResult = await connection.query(query, [id]);
+    const sale = saleResult.rows[0]; // Assume que apenas uma venda será retornada
+    // Executar a consulta para obter os itens da venda
+    const saleItemResult = await connection.query(queryItens, [id]);
+    const saleItem = saleItemResult.rows;
+    // Adicionar a propriedade saleItem ao objeto sale
+    sale.saleItems = saleItem;
 
-    const conn = await connection.conn();
-
-    try {
-      // Executar a consulta para obter os dados da venda
-      const saleResult = await conn.query(query, [id]);
-      const sale = saleResult.rows.length > 0 ? [saleResult.rows[0]] : [];
-
-      // Executar a consulta para obter os itens da venda
-      const saleItemResult = await conn.query(queryItens, [id]);
-      const saleItems = saleItemResult.rows;
-
-      // Adicionar a propriedade saleItems ao objeto sale, se houver resultados
-      if (sale.length > 0) {
-        sale[0].saleItems = saleItems;
-      }
-
-      // Retorna o array de objetos de venda
-      return sale;
-    } finally {
-      await conn.end();
-    }
+    return [sale];
   }
 
   async create(sale) {
@@ -72,29 +67,22 @@ class SaleModels {
       fkCustomerId,
       fkSellerId,
     } = sale;
-
     const saoPauloTimeZone = "America/Sao_Paulo";
-
     const releaseDateUTC = DateTime.now().setZone(saoPauloTimeZone).toISO();
-    const conn = await connection.conn();
-    try {
-      const saleCreated = await conn.query(query, [
-        orderNumber,
-        saleOrderPs,
-        orderDate,
-        releaseDateUTC,
-        expirationDate,
-        fkCustomerId,
-        fkSellerId,
-      ]);
-      return saleCreated.rowCount;
-    } finally {
-      await conn.end();
-    }
+    const saleCreated = await connection.query(query, [
+      orderNumber,
+      saleOrderPs,
+      orderDate,
+      releaseDateUTC,
+      expirationDate,
+      fkCustomerId,
+      fkSellerId,
+    ]);
+
+    return saleCreated.rowCount;
   }
 
   async update(id, sale) {
-    const conn = await connection.conn();
     const updates = sale;
     const updateQuery = Object.keys(updates)
       .map(
@@ -110,25 +98,16 @@ class SaleModels {
        SET  ${updateQuery}
        WHERE id = $${updateValues.length + 1}
      `;
+    const saleUpdated = await connection.query(query, [...updateValues, id]);
 
-    try {
-      const saleUpdated = await conn.query(query, [...updateValues, id]);
-
-      return saleUpdated.rowCount;
-    } finally {
-      conn.end();
-    }
+    return saleUpdated.rowCount;
   }
 
   async destroy(id) {
     const query = "DELETE FROM sale WHERE id = $1";
-    const conn = await connection.conn();
-    try {
-      const saleDestroyed = await conn.query(query, [id]);
-      return saleDestroyed;
-    } finally {
-      conn.end();
-    }
+    const saleDestroyed = await connection.query(query, [id]);
+
+    return saleDestroyed;
   }
 }
 

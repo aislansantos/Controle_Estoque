@@ -5,8 +5,8 @@ class ProductUnitModels {
     const query = `
       SELECT *
       FROM product_unit`;
-    const conn = await connection.conn();
-    const productUnits = await conn.query(query);
+    const productUnits = await connection.query(query);
+
     return productUnits.rows;
   }
 
@@ -15,8 +15,9 @@ class ProductUnitModels {
       SELECT *
       FROM product_unit
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const productUnit = await conn.query(query, [id]);
+
+    const productUnit = await connection.query(query, [id]);
+
     return productUnit.rows;
   }
 
@@ -25,8 +26,8 @@ class ProductUnitModels {
       INSERT
       INTO product_unit (description) VALUES ($1)`;
     const { description } = productUnit;
-    const conn = await connection.conn();
-    const productUnitCreated = await conn.query(query, [description]);
+    const productUnitCreated = await connection.query(query, [description]);
+
     return productUnitCreated;
   }
 
@@ -36,8 +37,8 @@ class ProductUnitModels {
       SET description = $1
       WHERE id = $2`;
     const { description } = productUnit;
-    const conn = await connection.conn();
-    const productUnitUpdate = await conn.query(query, [description, id]);
+    const productUnitUpdate = await connection.query(query, [description, id]);
+
     return productUnitUpdate;
   }
 
@@ -46,8 +47,8 @@ class ProductUnitModels {
       DELETE
       FROM product_unit
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const productUnitDestroyed = await conn.query(query, [id]);
+    const productUnitDestroyed = await connection.query(query, [id]);
+
     return productUnitDestroyed;
   }
 }

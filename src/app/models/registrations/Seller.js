@@ -6,8 +6,8 @@ class SellerModels {
       SELECT *
       FROM seller
       ORDER BY id`;
-    const conn = await connection.conn();
-    const sellers = await conn.query(query);
+    const sellers = await connection.query(query);
+
     return sellers.rows;
   }
 
@@ -16,8 +16,8 @@ class SellerModels {
       SELECT *
       FROM seller
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const seller = await conn.query(query, [id]);
+    const seller = await connection.query(query, [id]);
+
     return seller.rows;
   }
 
@@ -26,8 +26,8 @@ class SellerModels {
       INSERT
       INTO seller (name, email, branch) VALUES ($1, $2, $3)`;
     const { name, email, branch } = seller;
-    const conn = await connection.conn();
-    const sellerCreated = await conn.query(query, [name, email, branch]);
+    const sellerCreated = await connection.query(query, [name, email, branch]);
+
     return sellerCreated;
   }
 
@@ -37,8 +37,13 @@ class SellerModels {
       SET name = $1, email=$2, branch = $3
       WHERE id = $3`;
     const { name, email, branch } = seller;
-    const conn = await connection.conn();
-    const sellerUpdated = await conn.query(query, [name, email, branch, id]);
+    const sellerUpdated = await connection.query(query, [
+      name,
+      email,
+      branch,
+      id,
+    ]);
+
     return sellerUpdated;
   }
 
@@ -47,8 +52,8 @@ class SellerModels {
       DELETE
       FROM seller
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const sellerDestroyed = await conn.query(qyery, [id]);
+    const sellerDestroyed = await connection.query(qyery, [id]);
+
     return sellerDestroyed;
   }
 }

@@ -1,6 +1,6 @@
 import salesModels from "../../models/movements/Sale";
 
-class SaleController {
+class SalesController {
   async index(req, res) {
     try {
       const sales = await salesModels.index();
@@ -57,4 +57,4 @@ class SaleController {
   }
 }
 
-export default new SaleController();
+export default new SalesController();

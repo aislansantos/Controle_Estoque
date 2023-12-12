@@ -4,10 +4,9 @@ class SupplierModels {
   async index() {
     const query = `
     SELECT *
-    FROM supplier
-    ORDER BY id`;
-    const conn = await connection.conn();
-    const suppliers = await conn.query(query);
+    FROM supplier`;
+    const suppliers = await connection.query(query);
+
     return suppliers.rows;
   }
 
@@ -16,8 +15,8 @@ class SupplierModels {
       SELECT *
       FROM supplier
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const supplier = await conn.query(query, [id]);
+    const supplier = await connection.query(query, [id]);
+
     return supplier.rows;
   }
 
@@ -27,8 +26,8 @@ class SupplierModels {
       INTO supplier (name, email)
       VALUES ($1, $2)`;
     const { name, email } = supplier;
-    const conn = await connection.conn();
-    const createdSupplier = await conn.query(query, [name, email]);
+    const createdSupplier = await connection.query(query, [name, email]);
+
     return createdSupplier.rowCount;
   }
 
@@ -38,8 +37,8 @@ class SupplierModels {
       SET name = $1, email = $2
       WHERE id = $3`;
     const { name, email } = supplier;
-    const conn = await connection.conn();
-    const updatedSupplier = await conn.query(query, [name, email, id]);
+    const updatedSupplier = await connection.query(query, [name, email, id]);
+
     return updatedSupplier;
   }
 
@@ -48,8 +47,8 @@ class SupplierModels {
       DELETE
       FROM supplier
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const destroyedSupplier = await conn.query(query, [id]);
+    const destroyedSupplier = await connection.query(query, [id]);
+
     return destroyedSupplier;
   }
 }

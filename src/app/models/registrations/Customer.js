@@ -4,10 +4,9 @@ class CustomerModels {
   async index() {
     const query = `
       SELECT *
-      FROM customer
-      ORDER BY id`;
-    const conn = await connection.conn();
-    const customers = await conn.query(query);
+      FROM customer`;
+    const customers = await connection.query(query);
+
     return customers.rows;
   }
 
@@ -16,19 +15,18 @@ class CustomerModels {
       SELECT *
       FROM customer
       WHERE id=$1`;
-    const conn = await connection.conn();
-    const customer = await conn.query(query, [id]);
+    const customer = await connection.query(query, [id]);
+
     return customer.rows;
   }
 
   async create(customer) {
     const query = `
-      INSERT
-      INTO customer (name, email, city)
+      INSERT INTO customer (name, email, city)
       VALUES  ($1,$2,$3)`;
+
     const { name, email, city } = customer;
-    const conn = await connection.conn();
-    const createdCustomer = await conn.query(query, [name, email, city]);
+    const createdCustomer = await connection.query(query, [name, email, city]);
     return createdCustomer.rowCount;
   }
 
@@ -36,11 +34,16 @@ class CustomerModels {
     const query = `
       UPDATE customer
       SET name = $1, email = $2, city =$3
-      WHERE id = $4`;
+      WHERE id = $4 `;
+
     const { name, email, city } = customer;
-    const conn = await connection.conn();
-    const updatedCustomer = await conn.query(query, [name, email, city, id]);
-    return updatedCustomer;
+    const updatedCustomer = await connection.query(query, [
+      name,
+      email,
+      city,
+      id,
+    ]);
+    return updatedCustomer.rowCount;
   }
 
   async destroy(id) {
@@ -48,9 +51,9 @@ class CustomerModels {
       DELETE
       FROM customer
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const destroyedCustomer = await conn.query(query, [id]);
-    return destroyedCustomer;
+
+    const destroyedCustomer = await connection.query(query, [id]);
+    return destroyedCustomer.rowCount;
   }
 }
 

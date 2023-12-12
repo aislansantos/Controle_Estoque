@@ -5,8 +5,8 @@ class ProductCategoryModels {
     const query = `
       SELECT *
       FROM product_category`;
-    const conn = await connection.conn();
-    const productCategories = await conn.query(query);
+    const productCategories = await connection.query(query);
+
     return productCategories.rows;
   }
 
@@ -15,19 +15,19 @@ class ProductCategoryModels {
       SELECT *
       FROM product_category
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const productCategory = await conn.query(query, [id]);
+    const productCategory = await connection.query(query, [id]);
+
     return productCategory.rows;
   }
 
   async create(productCategory) {
+    const { description } = productCategory;
     const query = `
       INSERT
       INTO product_category (description)
       VALUES ($1)`;
-    const { description } = productCategory;
-    const conn = await connection.conn();
-    const productCategoryCreated = await conn.query(query, [description]);
+    const productCategoryCreated = await connection.query(query, [description]);
+
     return productCategoryCreated;
   }
 
@@ -37,8 +37,11 @@ class ProductCategoryModels {
       SET description = $1
       WHERE id = $2`;
     const { description } = productCategory;
-    const conn = await connection.conn();
-    const productCategoryUpdate = await conn.query(query, [description, id]);
+
+    const productCategoryUpdate = await connection.query(query, [
+      description,
+      id,
+    ]);
     return productCategoryUpdate;
   }
 
@@ -47,8 +50,8 @@ class ProductCategoryModels {
       DELETE
       FROM product_category
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const productCategoryDestroyed = await conn.query(query, [id]);
+
+    const productCategoryDestroyed = await connection.query(query, [id]);
     return productCategoryDestroyed;
   }
 }

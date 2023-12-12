@@ -8,8 +8,8 @@ class ProductModels {
       INNER JOIN product_category pc ON pr.fk_id_category = pc.id
       INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id
       ORDER BY id`;
-    const conn = await connection.conn();
-    const products = await conn.query(query);
+
+    const products = await connection.query(query);
     return products.rows;
   }
 
@@ -20,24 +20,24 @@ class ProductModels {
       INNER JOIN product_category pc ON pr.fk_id_category = pc.id
       INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id
       WHERE pr.id = $1`;
-    const conn = await connection.conn();
-    const product = await conn.query(query, [id]);
+    const product = await connection.query(query, [id]);
+
     return product.rows;
   }
 
   async create(product) {
-    const { description, amount, FkIdUnit, FkIdCategory } = product;
     const query = `
-      INSERT
-      INTO product (description, amount, fk_id_unit, fk_id_category)
-      VALUES ($1, $2, $3, $4)`;
-    const conn = await connection.conn();
-    const productCreated = await conn.query(query, [
+    INSERT
+    INTO product (description, amount, fk_id_unit, fk_id_category)
+    VALUES ($1, $2, $3, $4)`;
+    const { description, amount, FkIdUnit, FkIdCategory } = product;
+    const productCreated = await connection.query(query, [
       description,
       amount,
       FkIdUnit,
       FkIdCategory,
     ]);
+
     return productCreated;
   }
 
@@ -47,14 +47,14 @@ class ProductModels {
       UPDATE  product
       SET description = $1, amount = $2, fk_id_unit = $3, fk_id_category = $4
       WHERE id = $5`;
-    const conn = await connection.conn();
-    const productUpdated = await conn.query(query, [
+    const productUpdated = await connection.query(query, [
       description,
       amount,
       FkIdUnit,
       FkIdCategory,
       id,
     ]);
+
     return productUpdated;
   }
 
@@ -63,8 +63,8 @@ class ProductModels {
       DELETE
       FROM product
       WHERE id = $1`;
-    const conn = await connection.conn();
-    const productDestroyed = await conn.query(query, [id]);
+    const productDestroyed = await connection.query(query, [id]);
+
     return productDestroyed;
   }
 }

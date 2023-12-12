@@ -7,6 +7,7 @@ import productCategoriesController from "./app/controllers/registrations/Product
 import productUnitsController from "./app/controllers/registrations/ProductUnitsController";
 import productsController from "./app/controllers/registrations/ProductsController";
 import saleController from "./app/controllers/movements/SalesController";
+import itemsSaleController from "./app/controllers/movements/ItensSalesController";
 
 const routes = new Router();
 const jsonParser = bodyParser.json();
@@ -67,5 +68,21 @@ routes.get("/sales/:id", saleController.show);
 routes.post("/sales", jsonParser, saleController.create);
 routes.patch("/sales/:id", jsonParser, saleController.update);
 routes.delete("/sales/:id", saleController.destroy);
+
+// Items Sales
+//! buscas de id de produto na venda pelo: id_product_sale
+routes.get("/sales/:salesId/items_sales", itemsSaleController.index);
+routes.get("/sales/:salesId/items_sales/:id", itemsSaleController.show);
+routes.post(
+  "/sales/:salesId/items_sales",
+  jsonParser,
+  itemsSaleController.create
+);
+routes.patch(
+  "/sales/:salesId/items_sales/:id",
+  jsonParser,
+  itemsSaleController.update
+);
+routes.delete("/sales/:salesId/items_sales/:id", itemsSaleController.destroy);
 
 export default routes;

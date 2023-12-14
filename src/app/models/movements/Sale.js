@@ -4,10 +4,26 @@ import connection from "../../../config/Connection";
 class SaleModels {
   async index() {
     const query = `
-    SELECT sa.id, sa.order_number, sa.sale_order_ps, sa.order_date,sa.release_date, sa.expiration_date,cu.id as id_customer ,cu.name as customer,se.id as id_seller, se.name as seller
-    FROM sale sa
-    INNER JOIN customer cu ON sa.fk_customer_id = cu.id
-    INNER JOIN seller se ON sa.fk_seller_id = se.id`;
+      SELECT
+        sa.id,
+        sa.order_number,
+        sa.sale_order_ps,
+        sa.order_date,
+        sa.release_date,
+        sa.expiration_date,
+        cu.id AS id_customer,
+        cu.name AS customer,
+        se.id AS id_seller,
+        se.name AS seller,
+        COALESCE(total_sale, 0) AS total_sale
+      FROM sale sa
+      INNER JOIN customer cu ON sa.fk_customer_id = cu.id
+      INNER JOIN seller se ON sa.fk_seller_id = se.id
+      LEFT JOIN (
+        SELECT fk_sale_id, SUM(total_value) AS total_sale
+        FROM sale_item
+        GROUP BY fk_sale_id
+      ) si ON si.fk_sale_id = sa.id`;
     const sales = await connection.query(query);
 
     return sales.rows;
@@ -15,27 +31,29 @@ class SaleModels {
 
   async show(id) {
     try {
+      // Consulta principal
       const query = `
         SELECT
-        DISTINCT ON (sa.id)
-        sa.id,
-        sa.order_number,
-        sa.sale_order_ps,
-        sa.order_date,
-        sa.release_date,
-        sa.expiration_date,
-        cu.id as id_customer,
-        cu.name as customer,
-        se.id as id_seller,
-        se.name as seller,
-        SUM(si.total_value) OVER (PARTITION BY si.fk_sale_id) AS total_sale
-      FROM sale sa
-      INNER JOIN customer cu ON sa.fk_customer_id = cu.id
-      INNER JOIN seller se ON sa.fk_seller_id = se.id
-      INNER JOIN sale_item si ON si.fk_sale_id = sa.id
-      WHERE sa.id = $1
-      ORDER BY sa.id;`;
+          DISTINCT ON (sa.id)
+          sa.id,
+          sa.order_number,
+          sa.sale_order_ps,
+          sa.order_date,
+          sa.release_date,
+          sa.expiration_date,
+          cu.id as id_customer,
+          cu.name as customer,
+          se.id as id_seller,
+          se.name as seller,
+          COALESCE(SUM(si.total_value) OVER (PARTITION BY si.fk_sale_id), 0) AS total_sale
+        FROM sale sa
+        INNER JOIN customer cu ON sa.fk_customer_id = cu.id
+        INNER JOIN seller se ON sa.fk_seller_id = se.id
+        LEFT JOIN sale_item si ON si.fk_sale_id = sa.id
+        WHERE sa.id = $1
+        ORDER BY sa.id;`;
 
+      // Consulta de itens
       const queryItens = `
         SELECT pr.id, pr.description as product, si.quantity_item, si.unitary_value, si.total_value
         FROM sale_item si

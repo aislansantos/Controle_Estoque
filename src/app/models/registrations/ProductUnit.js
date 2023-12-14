@@ -23,8 +23,8 @@ class ProductUnitModels {
 
   async create(productUnit) {
     const query = `
-      INSERT
-      INTO product_unit (description) VALUES ($1)`;
+      INSERT INTO product_unit (description)
+      VALUES ($1)`;
     const { description } = productUnit;
     const productUnitCreated = await connection.query(query, [description]);
 

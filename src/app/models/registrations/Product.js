@@ -43,6 +43,7 @@ class ProductModels {
 
   async update(id, product) {
     const { description, amount, FkIdUnit, FkIdCategory } = product;
+    console.log(description, amount, FkIdUnit, FkIdCategory);
     const query = `
       UPDATE  product
       SET description = $1, amount = $2, fk_id_unit = $3, fk_id_category = $4

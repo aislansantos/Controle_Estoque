@@ -1,0 +1,5 @@
+id,description,amount,fk_id_unit,fk_id_category
+8,Sabão em Pó,10,7,3
+7,Cadeira de Escritório,10,2,2
+6,Mouse LogiTech,2,2,1
+4,Monitor 27 polegadas,2,2,1

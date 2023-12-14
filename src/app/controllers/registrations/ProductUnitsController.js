@@ -25,6 +25,7 @@ class ProductUnitsController {
   async create(req, res) {
     try {
       const { body } = req;
+      console.log(body);
       await productUnitModels.create(body);
       return res.status(201).json({ criado: body.description });
     } catch (error) {

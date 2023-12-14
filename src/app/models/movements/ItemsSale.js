@@ -100,44 +100,79 @@ class ItemSaleModels {
       const fkSaleIdQuery = `${updateFields[updateFields.length - 1]}`;
 
       // ? Referente  ao retorno da quantidade do produto quando ele é trocado no update
-      // Consulta que retorna o id do pdoduto no cadastro e a quantidade que vamos retornar para o estoque
+      // Consulta que retorna o id do produto no cadastro e a quantidade que vamos retornar para o estoque
       const queryOldItemSale = `
-        SELECT *
+        SELECT fk_product_id, quantity_item
         FROM sale_item
         WHERE fk_sale_id = $1 AND id = $2`;
-      const returnOldProduct = await connection.query(queryOldItemSale, [
+      const oldProductResult = await connection.query(queryOldItemSale, [
         saleId,
         id,
       ]);
-      // Id do produto que temos de usar na consulta abaixo
-      const OldItemSaletId = returnOldProduct.rows[0].fk_product_id;
 
-      // Constulta retorna o estoque atual para fazer o processo de soma com o produto que esta voltando.
-      const queryAmoutProductAdjust = `
-        SELECT *
+      if (oldProductResult.rows.length === 0) {
+        throw new Error("Sale item not found.");
+      }
+
+      const { fk_product_id: oldProductId, quantity_item: oldQuantity } =
+        oldProductResult.rows[0];
+
+      // Consulta retorna o estoque atual para fazer o processo de soma com o produto que está voltando.
+      const queryAmountProductAdjust = `
+        SELECT amount
         FROM product
         WHERE id = $1`;
-      const AmoutProductAdjust = await connection.query(
-        queryAmoutProductAdjust,
-        [OldItemSaletId]
+      const amountProductAdjust = await connection.query(
+        queryAmountProductAdjust,
+        [oldProductId]
       );
-      // Valor que vai ser atribuido ao estoque no cadastro do produto
-      const amountUpdated =
-        AmoutProductAdjust.rows[0].amount +
-        returnOldProduct.rows[0].quantity_item;
 
-      // Consulta que executa o retorno do item que saiu da lista
-      const queryAdjustAmount = `UPDATE product SET amount = $1 WHERE id = $2`;
-      await connection.query(queryAdjustAmount, [
-        amountUpdated,
-        OldItemSaletId,
+      if (amountProductAdjust.rows.length === 0) {
+        throw new Error("Product not found.");
+      }
+
+      const currentAmount = amountProductAdjust.rows[0].amount;
+
+      // Valor que será atribuído ao estoque no cadastro do produto
+      const amountUpdated = currentAmount + oldQuantity;
+
+      // Consulta que executa o retorno do quantidade item que saiu da lista
+      const queryAdjustAmount = `
+        UPDATE product
+        SET amount = $1
+        WHERE id = $2 RETURNING *`; // Adicionei o RETURNING * para obter o resultado da atualização
+      await connection.query(queryAdjustAmount, [amountUpdated, oldProductId]);
+
+      // Referente à saída da quantidade do produto quando ele é trocado no update
+      const queryAmountNewProduct = `
+        SELECT amount
+        FROM product
+        WHERE id = $1`;
+      const amountNewProduct = await connection.query(queryAmountNewProduct, [
+        fkProductId,
       ]);
 
-      // Constrói consulta SQL de atualização no pedido
+      if (amountNewProduct.rows.length === 0) {
+        throw new Error("New product not found.");
+      }
+
+      const newAmountProduct = amountNewProduct.rows[0].amount - quantityItem;
+
+      const queryUpdateAmountNewProduct = `
+        UPDATE product
+        SET amount = $1
+        WHERE id = $2`;
+
+      await connection.query(queryUpdateAmountNewProduct, [
+        newAmountProduct,
+        fkProductId,
+      ]);
+
+      // // Constrói consulta SQL de atualização no pedido
       const query = `UPDATE sale_item SET ${camposHolders} WHERE ${fkProductIdQuery} AND ${fkSaleIdQuery}`;
       const itemSaleUpdated = await connection.query(query, updateValues);
 
-      // Retorna o número de linhas afetadas pela atualização
+      // // Retorna o número de linhas afetadas pela atualização
       return itemSaleUpdated.rowCount;
     } catch (error) {
       // Em caso de erro, exibe uma mensagem e retorna 0

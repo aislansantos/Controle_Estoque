@@ -8,7 +8,10 @@ class CustomerModels {
         FROM customer`;
       const customers = await connection.query(query);
 
-      return customers.rows;
+      if (customers.rows.length > 0) {
+        return customers.rows;
+      }
+      return null;
     } catch (error) {
       console.error("Error fetching customers:", error);
       throw new Error("An error occurred while fetching customers.");
@@ -23,7 +26,10 @@ class CustomerModels {
       WHERE id=$1`;
       const customer = await connection.query(query, [id]);
 
-      return customer.rows;
+      if (customer.rows.length > 0) {
+        return customer.rows[0];
+      }
+      return null;
     } catch (error) {
       console.error("Error fetching customer:", error);
       throw new Error("An error occurred while fetching customer.");
@@ -42,7 +48,7 @@ class CustomerModels {
         email,
         city,
       ]);
-      return createdCustomer.rowCount;
+      return createdCustomer.rows[0];
     } catch (error) {
       console.error("Error creating customer:", error);
       throw new Error("An error occurred while creating a customer.");

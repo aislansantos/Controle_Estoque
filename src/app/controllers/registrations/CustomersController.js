@@ -1,9 +1,10 @@
-import customersModel from "../../models/registrations/Customer";
+// import CustomerService from "../../models/registrations/Customer";
+import customerService from "../../services/resgistration/CustomerService";
 
 class CustomersController {
   async index(req, res) {
     try {
-      const customers = await customersModel.index();
+      const customers = await customerService.index();
       return res.status(200).json(customers);
     } catch (error) {
       console.log(error);
@@ -14,19 +15,28 @@ class CustomersController {
   async show(req, res) {
     try {
       const { id } = req.params;
-      const customer = await customersModel.show(id);
-      return res.status(200).json(customer);
+      const customer = await customerService.show(id);
+
+      if (customer !== null) {
+        return res.status(200).json({ data: customer });
+      }
+
+      return res
+        .status(404)
+        .json({ status: "error", message: "Customer not found." });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+      console.error(error);
+      return res
+        .status(500)
+        .json({ status: "error", message: "Internal server error." });
     }
   }
 
   async create(req, res) {
     try {
       const { body } = req;
-      await customersModel.create(body);
-      return res.status(201).json({ criado: body.name });
+      await customerService.create(body);
+      return res.status(201).json({ data: body });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });
@@ -37,7 +47,7 @@ class CustomersController {
     try {
       const { id } = req.params;
       const { body } = req;
-      await customersModel.update(id, body);
+      await customerService.update(id, body);
       return res.status(200).json({ id_client: id });
     } catch (error) {
       console.log(error);
@@ -48,7 +58,7 @@ class CustomersController {
   async destroy(req, res) {
     try {
       const { id } = req.params;
-      await customersModel.destroy(id);
+      await customerService.destroy(id);
       return res.status(204).json();
     } catch (error) {
       console.log(error);

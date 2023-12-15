@@ -9,12 +9,11 @@ class App {
   }
 
   middlewares() {
-    this.server.unsubscribe(express.json());
+    this.server.use(express.json());
   }
 
   routes() {
     this.server.use(routes);
-    this.server.use(express.json());
   }
 }
 

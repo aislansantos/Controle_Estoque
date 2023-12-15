@@ -2,59 +2,88 @@ import connection from "../../../config/Connection";
 
 class SellerModels {
   async index() {
-    const query = `
+    try {
+      const query = `
       SELECT *
       FROM seller
       ORDER BY id`;
-    const sellers = await connection.query(query);
+      const sellers = await connection.query(query);
 
-    return sellers.rows;
+      return sellers.rows;
+    } catch (error) {
+      console.error("Error fetching sellers:", error);
+      throw new Error("An error occurred while fetching sellers.");
+    }
   }
 
   async show(id) {
-    const query = `
+    try {
+      const query = `
       SELECT *
       FROM seller
       WHERE id = $1`;
-    const seller = await connection.query(query, [id]);
+      const seller = await connection.query(query, [id]);
 
-    return seller.rows;
+      return seller.rows;
+    } catch (error) {
+      console.error("Error fetching seller:", error);
+      throw new Error("An error occurred while fetching seller.");
+    }
   }
 
   async create(seller) {
-    const query = `
+    try {
+      const query = `
       INSERT
       INTO seller (name, email, branch) VALUES ($1, $2, $3)`;
-    const { name, email, branch } = seller;
-    const sellerCreated = await connection.query(query, [name, email, branch]);
+      const { name, email, branch } = seller;
+      const sellerCreated = await connection.query(query, [
+        name,
+        email,
+        branch,
+      ]);
 
-    return sellerCreated;
+      return sellerCreated;
+    } catch (error) {
+      console.error("Error creating seller:", error);
+      throw new Error("An error occurred while creating seller.");
+    }
   }
 
   async update(id, seller) {
-    const query = `
+    try {
+      const query = `
       UPDATE seller
       SET name = $1, email=$2, branch = $3
       WHERE id = $3`;
-    const { name, email, branch } = seller;
-    const sellerUpdated = await connection.query(query, [
-      name,
-      email,
-      branch,
-      id,
-    ]);
+      const { name, email, branch } = seller;
+      const sellerUpdated = await connection.query(query, [
+        name,
+        email,
+        branch,
+        id,
+      ]);
 
-    return sellerUpdated;
+      return sellerUpdated;
+    } catch (error) {
+      console.error("Error updating seller:", error);
+      throw new Error("An error occurred while updating seller.");
+    }
   }
 
   async destroy(id) {
-    const qyery = `
+    try {
+      const qyery = `
       DELETE
       FROM seller
       WHERE id = $1`;
-    const sellerDestroyed = await connection.query(qyery, [id]);
+      const sellerDestroyed = await connection.query(qyery, [id]);
 
-    return sellerDestroyed;
+      return sellerDestroyed;
+    } catch (error) {
+      console.error("Error deleting seller:", error);
+      throw new Error("An error occurred while deleting seller.");
+    }
   }
 }
 export default new SellerModels();

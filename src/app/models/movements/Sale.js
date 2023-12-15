@@ -3,13 +3,14 @@ import connection from "../../../config/Connection";
 
 class SaleModels {
   async index() {
-    const query = `
+    try {
+      const query = `
       SELECT
-        sa.id,
-        sa.order_number,
-        sa.sale_order_ps,
-        sa.order_date,
-        sa.release_date,
+      sa.id,
+      sa.order_number,
+      sa.sale_order_ps,
+      sa.order_date,
+      sa.release_date,
         sa.expiration_date,
         cu.id AS id_customer,
         cu.name AS customer,
@@ -23,10 +24,14 @@ class SaleModels {
         SELECT fk_sale_id, SUM(total_value) AS total_sale
         FROM sale_item
         GROUP BY fk_sale_id
-      ) si ON si.fk_sale_id = sa.id`;
-    const sales = await connection.query(query);
+        ) si ON si.fk_sale_id = sa.id`;
+      const sales = await connection.query(query);
 
-    return sales.rows;
+      return sales.rows;
+    } catch (error) {
+      console.error("Error fetching sales:", error);
+      throw new Error("An error occurred while fetching sales.");
+    }
   }
 
   async show(id) {
@@ -77,65 +82,80 @@ class SaleModels {
       // Retorna um array vazio se não houver resultados
       return [];
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error("Error fetching sale:", error);
+      throw new Error("An error occurred while fetching sale.");
     }
   }
 
   async create(sale) {
-    const query = `
-    INSERT
-    INTO sale( order_number, sale_order_ps, order_date, release_date, expiration_date, fk_customer_id, fk_seller_id)
-    VALUES ($1, $2, $3,$4 ,$5 ,$6 ,$7)`;
-    const {
-      orderNumber,
-      saleOrderPs,
-      orderDate,
-      expirationDate,
-      fkCustomerId,
-      fkSellerId,
-    } = sale;
-    const saoPauloTimeZone = "America/Sao_Paulo";
-    const releaseDateUTC = DateTime.now().setZone(saoPauloTimeZone).toISO();
-    const saleCreated = await connection.query(query, [
-      orderNumber,
-      saleOrderPs,
-      orderDate,
-      releaseDateUTC,
-      expirationDate,
-      fkCustomerId,
-      fkSellerId,
-    ]);
+    try {
+      const query = `
+      INSERT
+      INTO sale( order_number, sale_order_ps, order_date, release_date, expiration_date, fk_customer_id, fk_seller_id)
+      VALUES ($1, $2, $3,$4 ,$5 ,$6 ,$7)`;
+      const {
+        orderNumber,
+        saleOrderPs,
+        orderDate,
+        expirationDate,
+        fkCustomerId,
+        fkSellerId,
+      } = sale;
+      const saoPauloTimeZone = "America/Sao_Paulo";
+      const releaseDateUTC = DateTime.now().setZone(saoPauloTimeZone).toISO();
+      const saleCreated = await connection.query(query, [
+        orderNumber,
+        saleOrderPs,
+        orderDate,
+        releaseDateUTC,
+        expirationDate,
+        fkCustomerId,
+        fkSellerId,
+      ]);
 
-    return saleCreated.rowCount;
+      return saleCreated.rowCount;
+    } catch (error) {
+      console.error("Error creating sale:", error);
+      throw new Error("An error occurred while create sale.");
+    }
   }
 
   async update(id, sale) {
-    const updates = sale;
-    const updateQuery = Object.keys(updates)
-      .map(
-        (key, index) =>
-          `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase()} = $${
-            index + 1
-          }`
-      )
-      .join(", ");
-    const updateValues = Object.values(sale);
-    const query = `
-       UPDATE sale
-       SET  ${updateQuery}
-       WHERE id = $${updateValues.length + 1}
-     `;
-    const saleUpdated = await connection.query(query, [...updateValues, id]);
+    try {
+      const updates = sale;
+      const updateQuery = Object.keys(updates)
+        .map(
+          (key, index) =>
+            `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase()} = $${
+              index + 1
+            }`
+        )
+        .join(", ");
+      const updateValues = Object.values(sale);
+      const query = `
+        UPDATE sale
+        SET  ${updateQuery}
+        WHERE id = $${updateValues.length + 1}
+        `;
+      const saleUpdated = await connection.query(query, [...updateValues, id]);
 
-    return saleUpdated.rowCount;
+      return saleUpdated.rowCount;
+    } catch (error) {
+      console.error("Error updating sale:", error);
+      throw new Error("An error occurred while updating sale.");
+    }
   }
 
   async destroy(id) {
-    const query = "DELETE FROM sale WHERE id = $1";
-    const saleDestroyed = await connection.query(query, [id]);
+    try {
+      const query = "DELETE FROM sale WHERE id = $1";
+      const saleDestroyed = await connection.query(query, [id]);
 
-    return saleDestroyed;
+      return saleDestroyed;
+    } catch (error) {
+      console.error("Error delating sale:", error);
+      throw new Error("An error occurred while deleting sale.");
+    }
   }
 }
 

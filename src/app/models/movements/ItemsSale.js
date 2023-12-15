@@ -168,11 +168,11 @@ class ItemSaleModels {
         fkProductId,
       ]);
 
-      // // Constrói consulta SQL de atualização no pedido
+      // Constrói consulta SQL de atualização no pedido
       const query = `UPDATE sale_item SET ${camposHolders} WHERE ${fkProductIdQuery} AND ${fkSaleIdQuery}`;
       const itemSaleUpdated = await connection.query(query, updateValues);
 
-      // // Retorna o número de linhas afetadas pela atualização
+      // Retorna o número de linhas afetadas pela atualização
       return itemSaleUpdated.rowCount;
     } catch (error) {
       // Em caso de erro, exibe uma mensagem e retorna 0

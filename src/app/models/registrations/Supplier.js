@@ -3,10 +3,11 @@ import connection from "../../../config/Connection";
 class SupplierModels {
   async index() {
     try {
-      const query = `
+      const querySelect = `
       SELECT *
       FROM supplier`;
-      const suppliers = await connection.query(query);
+
+      const suppliers = await connection.query(querySelect);
 
       return suppliers.rows;
     } catch (error) {

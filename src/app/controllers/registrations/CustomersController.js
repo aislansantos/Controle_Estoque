@@ -1,5 +1,5 @@
 // import CustomerService from "../../models/registrations/Customer";
-import customerService from "../../services/resgistration/CustomerService";
+import customerService from "../../services/resgistration/CustomersService";
 
 class CustomersController {
   async index(req, res) {
@@ -17,7 +17,7 @@ class CustomersController {
       const { id } = req.params;
       const customer = await customerService.show(id);
 
-      if (customer !== null) {
+      if (customer) {
         return res.status(200).json({ data: customer });
       }
 
@@ -35,6 +35,7 @@ class CustomersController {
   async create(req, res) {
     try {
       const { body } = req;
+      console.log(body.name);
       await customerService.create(body);
       return res.status(201).json({ data: body });
     } catch (error) {
@@ -47,8 +48,12 @@ class CustomersController {
     try {
       const { id } = req.params;
       const { body } = req;
-      await customerService.update(id, body);
-      return res.status(200).json({ id_client: id });
+      const updatedCustomer = await customerService.update(id, body);
+
+      if (updatedCustomer) {
+        return res.status(200).json({ data: updatedCustomer });
+      }
+      return res.status(404).json({ message: "Customer not found." });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });
@@ -58,8 +63,14 @@ class CustomersController {
   async destroy(req, res) {
     try {
       const { id } = req.params;
-      await customerService.destroy(id);
-      return res.status(204).json();
+      const destroiedCustomer = await customerService.destroy(id);
+
+      // Se o cliente foi deletado com sucesso, retorne os dados do cliente
+      if (destroiedCustomer) {
+        return res.status(200).json({ data: destroiedCustomer });
+      }
+      // Se o cliente não foi encontrado
+      return res.status(404).json({ message: "Customer not found." });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });

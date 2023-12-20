@@ -32,31 +32,29 @@ class CustomerServices {
   async create(customer) {
     try {
       const createdCustomer = await customerModels.create(customer);
-
-      if (createdCustomer) {
-        return createdCustomer;
-      }
-
-      return null;
+      return createdCustomer;
     } catch (error) {
-      throw new Error(`Error fetching customer: ${error.message}`);
+      throw new Error(`Error creating customer: ${error.message}`);
     }
   }
 
-  // async update(id, customer) {
-  //   try {
-  //   } catch (error) {}
-  // }
+  async update(id, customer) {
+    try {
+      const updatedCustomer = await customerModels.update(id, customer);
+      return updatedCustomer;
+    } catch (error) {
+      throw new Error(`Error updating customer: ${error.message}`);
+    }
+  }
 
-  // async show() {
-  //   try {
-  //   } catch (error) {}
-  // }
-
-  // async show() {
-  //   try {
-  //   } catch (error) {}
-  // }
+  async destroy(id) {
+    try {
+      const destroyedCustomer = await customerModels.destroy(id);
+      return destroyedCustomer;
+    } catch (error) {
+      throw new Error(`Error deleting customer: ${error.message}`);
+    }
+  }
 }
 
 export default new CustomerServices();

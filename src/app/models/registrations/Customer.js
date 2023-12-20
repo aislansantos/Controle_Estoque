@@ -3,10 +3,10 @@ import connection from "../../../config/Connection";
 class CustomerModels {
   async index() {
     try {
-      const query = `
+      const querySelect = `
         SELECT *
         FROM customer`;
-      const customers = await connection.query(query);
+      const customers = await connection.query(querySelect);
 
       if (customers.rows.length > 0) {
         return customers.rows;
@@ -57,19 +57,29 @@ class CustomerModels {
 
   async update(id, customer) {
     try {
-      const query = `
+      const selectQuery = `
+      SELECT *
+      FROM customer
+      WHERE id = $1`;
+
+      const updateQuery = `
       UPDATE customer
       SET name = $1, email = $2, city =$3
-      WHERE id = $4 `;
+      WHERE id = $4
+      RETURNING *`;
+
+      const customerToUpdate = await connection.query(selectQuery, [id]);
 
       const { name, email, city } = customer;
-      const updatedCustomer = await connection.query(query, [
+
+      const updatedCustomer = await connection.query(updateQuery, [
         name,
         email,
         city,
         id,
       ]);
-      return updatedCustomer.rowCount;
+
+      return customerToUpdate.rows[0];
     } catch (error) {
       console.error("Error updating customer:", error);
       throw new Error("An error while updating a customer.");
@@ -78,16 +88,27 @@ class CustomerModels {
 
   async destroy(id) {
     try {
-      const query = `
-      DELETE
-      FROM customer
-      WHERE id = $1`;
+      const selectQuery = `
+        SELECT *
+        FROM customer
+        WHERE id = $1`;
 
-      const destroyedCustomer = await connection.query(query, [id]);
-      return destroyedCustomer.rowCount;
+      const deleteQuery = `
+        DELETE
+        FROM customer
+        WHERE id = $1
+        RETURNING *`; // Adiciona o RETURNING * para retornar os dados do cliente deletado
+
+      // Primeiro, seleciona os dados do cliente que será excluído
+      const customerToDestroy = await connection.query(selectQuery, [id]);
+
+      // Em seguida, executa a exclusão e retorna os dados do cliente
+      const destroyedCustomer = await connection.query(deleteQuery, [id]);
+
+      return customerToDestroy.rows[0]; // Retorna os dados do cliente deletado
     } catch (error) {
       console.error("Error deleting customer:", error);
-      throw new Error("An error while deleting a customer.");
+      throw new Error("An error occurred while deleting a customer.");
     }
   }
 }

@@ -17,7 +17,7 @@ routes.use(express.json());
 routes.get("/customers", customers.index);
 routes.get("/customers/:id", customers.show);
 routes.post("/customers", express.json(), customers.create);
-routes.put("/customers/:id", express.json(), customers.update);
+routes.patch("/customers/:id", express.json(), customers.update);
 routes.delete("/customers/:id", customers.destroy);
 
 // Suppliers

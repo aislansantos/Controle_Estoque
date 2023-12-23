@@ -12,33 +12,50 @@ class SuppleierServices {
       return null;
     } catch (error) {
       console.error(`Error fetching suppliers: ${error.message}`);
-      throw new Error("An error occurred while fetching customers.");
+      throw new Error("An error occurred while fetching suppliers.");
     }
   }
 
-  // async show() {
-  //   try {
-  //   } catch (error) {
-  //     console.error(`Error fetching customers: ${error.message}`);
-  //     throw new Error("An error occurred while fetching customers.");
-  //   }
-  // }
+  async show(id) {
+    try {
+      const supplier = await suppliersModels.show(id);
 
-  // async create() {
-  //   try {
-  //   } catch (error) {
-  //     console.error(`Error fetching customers: ${error.message}`);
-  //     throw new Error("An error occurred while fetching customers.");
-  //   }
-  // }
+      if (supplier) {
+        return supplier;
+      }
 
-  // async update() {
-  //   try {
-  //   } catch (error) {
-  //     console.error(`Error fetching customers: ${error.message}`);
-  //     throw new Error("An error occurred while fetching customers.");
-  //   }
-  // }
+      return null;
+    } catch (error) {
+      console.error(`Error fetching supplier: ${error.message}`);
+      throw new Error("An error occurred while fetching supplier.");
+    }
+  }
+
+  async create(supplier) {
+    try {
+      const createdSupplier = await suppliersModels.create(supplier);
+
+      if (createdSupplier) {
+        return createdSupplier;
+      }
+
+      return null;
+    } catch (error) {
+      console.error(`Error create supplier: ${error.message}`);
+      throw new Error("An error occurred while create supplier.");
+    }
+  }
+
+  async update(id, supplier) {
+    try {
+      const updatedSupplier = await suppliersModels.update(id, supplier);
+
+      return updatedSupplier;
+    } catch (error) {
+      console.error(`Error fetching customers: ${error.message}`);
+      throw new Error("An error occurred while fetching customers.");
+    }
+  }
 
   // async destroy() {
   //   try {

@@ -32,7 +32,12 @@ class CustomerServices {
   async create(customer) {
     try {
       const createdCustomer = await customerModels.create(customer);
-      return createdCustomer;
+
+      if (createdCustomer) {
+        return createdCustomer;
+      }
+
+      return null;
     } catch (error) {
       throw new Error(`Error creating customer: ${error.message}`);
     }
@@ -40,10 +45,37 @@ class CustomerServices {
 
   async update(id, customer) {
     try {
-      const updatedCustomer = await customerModels.update(id, customer);
-      return updatedCustomer;
+      const customerUpdate = await customerModels.show(id);
+
+      const { name, email, city } = customer;
+
+      const updateFields = [];
+      const updateValues = [];
+
+      if (name !== undefined) {
+        updateFields.push(`name = $${updateValues.length + 1}`);
+        updateValues.push(name);
+      }
+
+      if (email !== undefined) {
+        updateFields.push(`email = $${updateValues.length + 1}`);
+        updateValues.push(email);
+      }
+
+      if (city !== undefined) {
+        updateFields.push(`city = $${updateValues.length + 1}`);
+        updateValues.push(city);
+      }
+
+      const idField = `id = $${updateValues.length + 1}`;
+
+      const fieldsTitles = `${updateFields.join(", ")}`;
+
+      await customerModels.update(id, idField, fieldsTitles, updateValues);
+      return customerUpdate;
     } catch (error) {
-      throw new Error(`Error updating customer: ${error.message}`);
+      console.error("Error updating customer:", error);
+      throw new Error("An error while updating a customer.");
     }
   }
 

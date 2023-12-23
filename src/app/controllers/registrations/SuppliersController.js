@@ -26,7 +26,7 @@ class SuppliersController {
     try {
       const { body } = req;
       await supplierModels.create(body);
-      return res.status(201).json({ criado: req.body.name });
+      return res.status(201).json({ data: body });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });

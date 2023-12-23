@@ -18,13 +18,13 @@ class SupplierModels {
 
   async show(id) {
     try {
-      const query = `
+      const querySelect = `
       SELECT *
       FROM supplier
       WHERE id = $1`;
-      const supplier = await connection.query(query, [id]);
+      const supplier = await connection.query(querySelect, [id]);
 
-      return supplier.rows;
+      return supplier.rows[0];
     } catch (error) {
       console.error("Error fetching supplier:", error);
       throw new Error("An error occurred while fetching supplier.");
@@ -34,13 +34,13 @@ class SupplierModels {
   async create(supplier) {
     try {
       const query = `
-      INSERT
-      INTO supplier (name, email)
+      INSERT INTO supplier (name, email)
       VALUES ($1, $2)`;
+
       const { name, email } = supplier;
       const createdSupplier = await connection.query(query, [name, email]);
 
-      return createdSupplier.rowCount;
+      return createdSupplier.rows[0];
     } catch (error) {
       console.error("Error creating supplier:", error);
       throw new Error("An error occurred while creating supplier.");
@@ -49,14 +49,18 @@ class SupplierModels {
 
   async update(id, supplier) {
     try {
-      const query = `
+      const supplierToUpdate = await this.show(id);
+
+      const queryUpadate = `
       UPDATE supplier
       SET name = $1, email = $2
-      WHERE id = $3`;
+      WHERE id = $3
+      RETURNING *`;
       const { name, email } = supplier;
-      const updatedSupplier = await connection.query(query, [name, email, id]);
 
-      return updatedSupplier;
+      await connection.query(queryUpadate, [name, email, id]);
+
+      return supplierToUpdate;
     } catch (error) {
       console.error("Error updating supplier:", error);
       throw new Error("An error occurred while updating supplier.");
@@ -65,13 +69,16 @@ class SupplierModels {
 
   async destroy(id) {
     try {
-      const query = `
+      const supplierToDelete = await this.show(id);
+
+      const queryDelete = `
       DELETE
       FROM supplier
       WHERE id = $1`;
-      const destroyedSupplier = await connection.query(query, [id]);
 
-      return destroyedSupplier;
+      await connection.query(queryDelete, [id]);
+
+      return supplierToDelete.rows[0];
     } catch (error) {
       console.error("Error deleting supplier:", error);
       throw new Error("An error occurred while deleting supplier.");

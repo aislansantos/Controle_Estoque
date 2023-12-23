@@ -6,12 +6,10 @@ class CustomerModels {
       const querySelect = `
         SELECT *
         FROM customer`;
+
       const customers = await connection.query(querySelect);
 
-      if (customers.rows.length > 0) {
-        return customers.rows;
-      }
-      return null;
+      return customers.rows;
     } catch (error) {
       console.error("Error fetching customers:", error);
       throw new Error("An error occurred while fetching customers.");
@@ -20,16 +18,13 @@ class CustomerModels {
 
   async show(id) {
     try {
-      const query = `
+      const querySelect = `
       SELECT *
       FROM customer
       WHERE id=$1`;
-      const customer = await connection.query(query, [id]);
+      const customer = await connection.query(querySelect, [id]);
 
-      if (customer.rows.length > 0) {
-        return customer.rows[0];
-      }
-      return null;
+      return customer.rows;
     } catch (error) {
       console.error("Error fetching customer:", error);
       throw new Error("An error occurred while fetching customer.");
@@ -55,31 +50,18 @@ class CustomerModels {
     }
   }
 
-  async update(id, customer) {
+  async update(id, idField, fieldsTitles, updateValues) {
     try {
-      const selectQuery = `
-      SELECT *
-      FROM customer
-      WHERE id = $1`;
+      const customerToUpdate = await this.show(id);
 
       const updateQuery = `
       UPDATE customer
-      SET name = $1, email = $2, city =$3
-      WHERE id = $4
-      RETURNING *`;
+      SET ${fieldsTitles}
+      WHERE ${idField}`;
 
-      const customerToUpdate = await connection.query(selectQuery, [id]);
+      await connection.query(updateQuery, [...updateValues, id]);
 
-      const { name, email, city } = customer;
-
-      const updatedCustomer = await connection.query(updateQuery, [
-        name,
-        email,
-        city,
-        id,
-      ]);
-
-      return customerToUpdate.rows[0];
+      return customerToUpdate;
     } catch (error) {
       console.error("Error updating customer:", error);
       throw new Error("An error while updating a customer.");
@@ -88,10 +70,7 @@ class CustomerModels {
 
   async destroy(id) {
     try {
-      const selectQuery = `
-        SELECT *
-        FROM customer
-        WHERE id = $1`;
+      const customerToDestroy = await this.show(id);
 
       const deleteQuery = `
         DELETE
@@ -99,13 +78,9 @@ class CustomerModels {
         WHERE id = $1
         RETURNING *`; // Adiciona o RETURNING * para retornar os dados do cliente deletado
 
-      // Primeiro, seleciona os dados do cliente que será excluído
-      const customerToDestroy = await connection.query(selectQuery, [id]);
+      await connection.query(deleteQuery, [id]);
 
-      // Em seguida, executa a exclusão e retorna os dados do cliente
-      const destroyedCustomer = await connection.query(deleteQuery, [id]);
-
-      return customerToDestroy.rows[0]; // Retorna os dados do cliente deletado
+      return customerToDestroy;
     } catch (error) {
       console.error("Error deleting customer:", error);
       throw new Error("An error occurred while deleting a customer.");

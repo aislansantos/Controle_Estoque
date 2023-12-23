@@ -109,8 +109,11 @@ class ItemSaleModels {
       updateValues.push(id);
 
       // Converte os campos em uma string formatada para a cláusula SET da consulta SQL
-      const camposHolders = `${updateFields.join(", ")}`;
+      // Cria uma string com os nomes dos campos separados por vírgula para serem usados na cláusula SET do SQL
+      const fieldsTitles = `${updateFields.join(", ")}`;
+      // Armazena a string do campo fk_product_id para uso na cláusula WHERE do SQL
       const fkProductIdQuery = `${updateFields[updateFields.length - 2]}`;
+      // Armazena a string do campo fk_sale_id para uso na cláusula WHERE do SQL
       const fkSaleIdQuery = `${updateFields[updateFields.length - 1]}`;
 
       // ? Referente  ao retorno da quantidade do produto quando ele é trocado no update
@@ -119,6 +122,8 @@ class ItemSaleModels {
         SELECT fk_product_id, quantity_item
         FROM sale_item
         WHERE fk_sale_id = $1 AND id = $2`;
+
+      // Executa a consulta SQL para obter o produto antigo e a quantidade vendida, com base no ID da venda e no ID do item de venda.
       const oldProductResult = await connection.query(queryOldItemSale, [
         saleId,
         id,
@@ -154,10 +159,10 @@ class ItemSaleModels {
       const queryAdjustAmount = `
         UPDATE product
         SET amount = $1
-        WHERE id = $2 RETURNING *`; // Adicionei o RETURNING * para obter o resultado da atualização
+        WHERE id = $2 RETURNING *`; // Adicionado o RETURNING * para obter o resultado da atualização
       await connection.query(queryAdjustAmount, [amountUpdated, oldProductId]);
 
-      // Referente à saída da quantidade do produto quando ele é trocado no update
+      // ? Referente à saída da quantidade do produto quando ele é trocado no update
       const queryAmountNewProduct = `
         SELECT amount
         FROM product
@@ -183,7 +188,7 @@ class ItemSaleModels {
       ]);
 
       // Constrói consulta SQL de atualização no pedido
-      const query = `UPDATE sale_item SET ${camposHolders} WHERE ${fkProductIdQuery} AND ${fkSaleIdQuery}`;
+      const query = `UPDATE sale_item SET ${fieldsTitles} WHERE ${fkProductIdQuery} AND ${fkSaleIdQuery}`;
       const itemSaleUpdated = await connection.query(query, updateValues);
 
       // Retorna o número de linhas afetadas pela atualização

@@ -52,16 +52,12 @@ class CustomerModels {
 
   async update(id, idField, fieldsTitles, updateValues) {
     try {
-      const customerToUpdate = await this.show(id);
-
       const updateQuery = `
-      UPDATE customer
-      SET ${fieldsTitles}
-      WHERE ${idField}`;
+    UPDATE customer
+    SET ${fieldsTitles}
+    WHERE ${idField}`;
 
       await connection.query(updateQuery, [...updateValues, id]);
-
-      return customerToUpdate;
     } catch (error) {
       console.error("Error updating customer:", error);
       throw new Error("An error while updating a customer.");

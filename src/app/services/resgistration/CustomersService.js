@@ -45,9 +45,10 @@ class CustomerServices {
 
   async update(id, customer) {
     try {
-      const customerUpdate = await customerModels.show(id);
-
+      const customerUpdate = await customerModels.show(id); // mostra os dados do customer antes da atualização
       const { name, email, city } = customer;
+
+      // console.log(customer);
 
       const updateFields = [];
       const updateValues = [];
@@ -72,6 +73,7 @@ class CustomerServices {
       const fieldsTitles = `${updateFields.join(", ")}`;
 
       await customerModels.update(id, idField, fieldsTitles, updateValues);
+
       return customerUpdate;
     } catch (error) {
       console.error("Error updating customer:", error);

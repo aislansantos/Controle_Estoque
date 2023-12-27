@@ -50,10 +50,11 @@ class CustomersController {
       const { body } = req;
       const updatedCustomer = await customerService.update(id, body);
 
-      if (updatedCustomer) {
-        return res.status(200).json({ data: updatedCustomer });
+      if (Array.isArray(updatedCustomer) && updatedCustomer.length === 0) {
+        return res.status(404).json({ message: "Customer not found." });
       }
-      return res.status(404).json({ message: "Customer not found." });
+
+      return res.status(200).json({ data: updatedCustomer });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });

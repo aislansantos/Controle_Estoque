@@ -22,6 +22,7 @@ class CustomerModels {
       SELECT *
       FROM customer
       WHERE id=$1`;
+
       const customer = await connection.query(querySelect, [id]);
 
       return customer.rows;

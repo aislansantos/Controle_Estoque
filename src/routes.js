@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import customers from "./app/controllers/registrations/CustomersController";
-import suppliers from "./app/controllers/registrations/SuppliersController";
+import suppliersController from "./app/controllers/registrations/SuppliersController";
 import sellers from "./app/controllers/registrations/SellersController";
 import productCategoriesController from "./app/controllers/registrations/ProductCategoriesController";
 import productUnitsController from "./app/controllers/registrations/ProductUnitsController";
@@ -11,7 +11,7 @@ import itemsSaleController from "./app/controllers/movements/ItensSalesControlle
 const routes = Router();
 
 // Aplicar express.json() diretamente ao roteador
-routes.use(express.json());
+// routes.use(express.json());
 
 // Customers
 routes.get("/customers", customers.index);
@@ -21,11 +21,11 @@ routes.patch("/customers/:id", express.json(), customers.update);
 routes.delete("/customers/:id", customers.destroy);
 
 // Suppliers
-routes.get("/suppliers", suppliers.index);
-routes.get("/suppliers/:id", suppliers.show);
-routes.post("/suppliers", express.json(), suppliers.create);
-routes.put("/suppliers/:id", express.json(), suppliers.update);
-routes.delete("/suppliers/:id", suppliers.destroy);
+routes.get("/suppliers", suppliersController.index);
+routes.get("/suppliers/:id", suppliersController.show);
+routes.post("/suppliers", express.json(), suppliersController.create);
+routes.patch("/suppliers/:id", express.json(), suppliersController.update);
+routes.delete("/suppliers/:id", suppliersController.destroy);
 
 // Sellers
 routes.get("/sellers", sellers.index);

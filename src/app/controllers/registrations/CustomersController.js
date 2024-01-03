@@ -1,6 +1,11 @@
 // import CustomerService from "../../models/registrations/Customer";
 import customerService from "../../services/resgistration/CustomersService";
 
+const messages = {
+  internalServerError: "Internal server error",
+  customerNotFound: "Customer not found.",
+};
+
 class CustomersController {
   async index(req, res) {
     try {
@@ -17,13 +22,13 @@ class CustomersController {
       const { id } = req.params;
       const customer = await customerService.show(id);
 
-      if (customer) {
-        return res.status(200).json({ data: customer });
+      if (!customer) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "Customer not found." });
       }
 
-      return res
-        .status(404)
-        .json({ status: "error", message: "Customer not found." });
+      return res.status(200).json({ data: customer });
     } catch (error) {
       console.error(error);
       return res
@@ -51,30 +56,30 @@ class CustomersController {
       const updatedCustomer = await customerService.update(id, body);
 
       if (Array.isArray(updatedCustomer) && updatedCustomer.length === 0) {
-        return res.status(404).json({ message: "Customer not found." });
+        return res.status(404).json({ message: messages.customerNotFound });
       }
 
       return res.status(200).json({ data: updatedCustomer });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: messages.internalServerError });
     }
   }
 
   async destroy(req, res) {
     try {
       const { id } = req.params;
-      const destroiedCustomer = await customerService.destroy(id);
+      const destroyedCustomer = await customerService.destroy(id);
 
       // Se o cliente foi deletado com sucesso, retorne os dados do cliente
-      if (destroiedCustomer) {
-        return res.status(200).json({ data: destroiedCustomer });
+      if (Array.isArray(destroyedCustomer) && destroyedCustomer.length === 0) {
+        return res.status(404).json({ message: messages.customerNotFound });
       }
-      // Se o cliente não foi encontrado
-      return res.status(404).json({ message: "Customer not found." });
+
+      return res.status(200).json({ data: destroyedCustomer });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: messages.internalServerError });
     }
   }
 }

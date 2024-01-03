@@ -84,6 +84,7 @@ class CustomerServices {
   async destroy(id) {
     try {
       const destroyedCustomer = await customerModels.destroy(id);
+
       return destroyedCustomer;
     } catch (error) {
       throw new Error(`Error deleting customer: ${error.message}`);

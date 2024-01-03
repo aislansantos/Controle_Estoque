@@ -48,22 +48,44 @@ class SuppleierServices {
 
   async update(id, supplier) {
     try {
-      const updatedSupplier = await suppliersModels.update(id, supplier);
+      const supplierUpdate = await suppliersModels.show(id); // mostra os dados do supplier antes da atualização
+      const { name, email } = supplier;
 
-      return updatedSupplier;
+      const updateFields = [];
+      const updateValues = [];
+
+      if (name !== undefined) {
+        updateFields.push(`name = $${updateValues.length + 1}`); // exemplo name = $1
+        updateValues.push(name);
+      }
+
+      if (email !== undefined) {
+        updateFields.push(`email = $${updateValues.length + 1}`); // ex. email = $2
+        updateValues.push(email);
+      }
+
+      const idField = `id = $${updateValues.length + 1}`; // ex. id = $3
+      const fieldsTittles = `${updateFields.join(", ")}`;
+
+      await suppliersModels.update(id, idField, fieldsTittles, updateValues);
+
+      return supplierUpdate;
     } catch (error) {
       console.error(`Error fetching customers: ${error.message}`);
       throw new Error("An error occurred while fetching customers.");
     }
   }
 
-  // async destroy() {
-  //   try {
-  //   } catch (error) {
-  //     console.error(`Error fetching customers: ${error.message}`);
-  //     throw new Error("An error occurred while fetching customers.");
-  //   }
-  // }
+  async destroy(id) {
+    try {
+      const destroyedSupplier = await suppliersModels.destroy(id);
+
+      return destroyedSupplier;
+    } catch (error) {
+      console.error(`Error fetching customers: ${error.message}`);
+      throw new Error("An error occurred while fetching customers.");
+    }
+  }
 }
 
 export default new SuppleierServices();

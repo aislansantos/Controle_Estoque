@@ -1,7 +1,13 @@
 import suppliersModels from "../../models/registrations/Supplier";
 
+const messages = {
+  consoleError: (action) => `Error ${action} supplier:`,
+  anErrorOccurred: (action) => `An error occurred while ${action} supplier.`,
+};
+
 class SuppleierServices {
   async index() {
+    const action = "fetching";
     try {
       const suppliers = await suppliersModels.index();
 
@@ -11,12 +17,13 @@ class SuppleierServices {
 
       return null;
     } catch (error) {
-      console.error(`Error fetching suppliers: ${error.message}`);
-      throw new Error("An error occurred while fetching suppliers.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async show(id) {
+    const action = "fetching";
     try {
       const supplier = await suppliersModels.show(id);
 
@@ -26,12 +33,13 @@ class SuppleierServices {
 
       return null;
     } catch (error) {
-      console.error(`Error fetching supplier: ${error.message}`);
-      throw new Error("An error occurred while fetching supplier.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async create(supplier) {
+    const action = "creating";
     try {
       const createdSupplier = await suppliersModels.create(supplier);
 
@@ -41,12 +49,13 @@ class SuppleierServices {
 
       return null;
     } catch (error) {
-      console.error(`Error create supplier: ${error.message}`);
-      throw new Error("An error occurred while create supplier.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async update(id, supplier) {
+    const action = "updating";
     try {
       const supplierUpdate = await suppliersModels.show(id); // mostra os dados do supplier antes da atualização
       const { name, email } = supplier;
@@ -71,19 +80,20 @@ class SuppleierServices {
 
       return supplierUpdate;
     } catch (error) {
-      console.error(`Error fetching customers: ${error.message}`);
-      throw new Error("An error occurred while fetching customers.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async destroy(id) {
+    const action = "destroying";
     try {
       const destroyedSupplier = await suppliersModels.destroy(id);
 
       return destroyedSupplier;
     } catch (error) {
-      console.error(`Error fetching customers: ${error.message}`);
-      throw new Error("An error occurred while fetching customers.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 }

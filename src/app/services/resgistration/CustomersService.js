@@ -1,7 +1,13 @@
 import customerModels from "../../models/registrations/Customer";
 
+const messages = {
+  consoleError: (action) => `Error ${action} customer:`,
+  anErrorOccurred: (action) => `An error occurred while ${action} customer.`,
+};
+
 class CustomerServices {
   async index() {
+    const action = "fetching";
     try {
       const customers = await customerModels.index();
 
@@ -11,12 +17,13 @@ class CustomerServices {
 
       return null;
     } catch (error) {
-      console.error(`Error fetching customers: ${error.message}`);
-      throw new Error("An error occurred while fetching customers.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async show(id) {
+    const action = "fetching";
     try {
       const customer = await customerModels.show(id);
 
@@ -25,11 +32,13 @@ class CustomerServices {
       }
       return null;
     } catch (error) {
-      throw new Error(`Error fetching customer: ${error.message}`);
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.consoleError(action));
     }
   }
 
   async create(customer) {
+    const action = "creating";
     try {
       const createdCustomer = await customerModels.create(customer);
 
@@ -39,11 +48,13 @@ class CustomerServices {
 
       return null;
     } catch (error) {
-      throw new Error(`Error creating customer: ${error.message}`);
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.consoleError(action), error.message);
     }
   }
 
   async update(id, customer) {
+    const action = "updating";
     try {
       const customerUpdate = await customerModels.show(id); // mostra os dados do customer antes da atualização
       const { name, email, city } = customer;
@@ -76,18 +87,20 @@ class CustomerServices {
 
       return customerUpdate;
     } catch (error) {
-      console.error("Error updating customer:", error);
-      throw new Error("An error while updating a customer.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async destroy(id) {
+    const action = "deleting";
     try {
       const destroyedCustomer = await customerModels.destroy(id);
 
       return destroyedCustomer;
     } catch (error) {
-      throw new Error(`Error deleting customer: ${error.message}`);
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 }

@@ -1,7 +1,14 @@
 import connection from "../../../config/Connection";
 
+// variaveis resposaveis pelas mensagens de retorno.
+const messages = {
+  consoleError: (action) => `Error ${action} supplier:`,
+  anErrorOccurred: (action) => `An error occurred while ${action} supplier.`,
+};
+
 class SupplierModels {
   async index() {
+    const action = "fetching";
     try {
       const querySelect = `
       SELECT *
@@ -11,12 +18,13 @@ class SupplierModels {
 
       return suppliers.rows;
     } catch (error) {
-      console.error("Error fetching suppliers:", error);
-      throw new Error("An error occurred while fetching suppliers.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async show(id) {
+    const action = "fetching";
     try {
       const querySelect = `
       SELECT *
@@ -26,12 +34,13 @@ class SupplierModels {
 
       return supplier.rows;
     } catch (error) {
-      console.error("Error fetching supplier:", error);
-      throw new Error("An error occurred while fetching supplier.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async create(supplier) {
+    const action = "creating";
     try {
       const query = `
       INSERT INTO supplier (name, email)
@@ -42,29 +51,25 @@ class SupplierModels {
 
       return createdSupplier.rows[0];
     } catch (error) {
-      console.error("Error creating supplier:", error);
-      throw new Error("An error occurred while creating supplier.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async update(id, idField, fieldsTitles, updateValues) {
+    const action = "updating";
     try {
       const queryUpadate = `UPDATE supplier SET ${fieldsTitles} WHERE ${idField}`;
 
-      console.log(id);
-      console.log(idField);
-      console.log(fieldsTitles);
-      console.log(updateValues);
-      console.log(queryUpadate);
-
       await connection.query(queryUpadate, [...updateValues, id]);
     } catch (error) {
-      console.error("Error updating supplier:", error);
-      throw new Error("An error occurred while updating supplier.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 
   async destroy(id) {
+    const action = "deleting";
     try {
       const supplierToDestroy = await this.show(id);
 
@@ -78,8 +83,8 @@ class SupplierModels {
 
       return supplierToDestroy;
     } catch (error) {
-      console.error("Error deleting supplier:", error);
-      throw new Error("An error occurred while deleting supplier.");
+      console.error(messages.consoleError(action), error.message);
+      throw new Error(messages.anErrorOccurred(action));
     }
   }
 }

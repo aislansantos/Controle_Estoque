@@ -13,7 +13,7 @@ class CustomersController {
       return res.status(200).json(customers);
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: messages.internalServerError });
     }
   }
 
@@ -25,7 +25,7 @@ class CustomersController {
       if (!customer) {
         return res
           .status(404)
-          .json({ status: "error", message: "Customer not found." });
+          .json({ status: "error", message: messages.customerNotFound });
       }
 
       return res.status(200).json({ data: customer });
@@ -33,7 +33,7 @@ class CustomersController {
       console.error(error);
       return res
         .status(500)
-        .json({ status: "error", message: "Internal server error." });
+        .json({ status: "error", message: messages.internalServerError });
     }
   }
 
@@ -45,7 +45,7 @@ class CustomersController {
       return res.status(201).json({ data: body });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: messages.internalServerError });
     }
   }
 

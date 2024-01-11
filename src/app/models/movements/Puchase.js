@@ -27,7 +27,7 @@ class PurchaseModels {
     }
   }
 
-  async show(id) {
+  async show(purchaseId) {
     try {
       const querySelectPurchase = `
     SELECT
@@ -47,9 +47,9 @@ class PurchaseModels {
 
       //! Depois de implementar as pesquisar de itens, voltar e colocar os items do pedido no show
 
-      const purchaseResult = await connection.query(querySelectPurchase, [id]);
-
-      console.log(purchaseResult.rows);
+      const purchaseResult = await connection.query(querySelectPurchase, [
+        purchaseId,
+      ]);
 
       if (purchaseResult.rows.length > 0) {
         return purchaseResult.rows;
@@ -67,7 +67,7 @@ class PurchaseModels {
       const queryCreate = `
       INSERT
       INTO purchase(order_number, purchase_order_ps, order_date, release_date, expiration_date, fk_supplier_id)
-      VALUE($1, $2, $3, $4, $5, $6)`;
+      VALUES ($1, $2, $3, $4, $5, $6)`;
       const {
         orderNumber,
         purchaseOrderPs,
@@ -93,9 +93,49 @@ class PurchaseModels {
     }
   }
 
-  // async update() {}
+  async update(purchaseId, updatedPurchaseData) {
+    try {
+      const updateColumns = Object.keys(updatedPurchaseData)
+        .map(
+          (key, index) =>
+            `${key
+              .replace(/([a-z])([A-Z])/g, "$1_$2")
+              .toLocaleLowerCase()} = $${index + 1}`
+        )
+        .join(", ");
 
-  // async destroy() {}
+      const updateValues = Object.values(updatedPurchaseData);
+      const query = `
+              UPDATE purchase
+              SET ${updateColumns}
+              WHERE id = $${updateValues.length + 1}
+      `;
+
+      const purchaseUpdatedResult = await connection.query(query, [
+        ...updateValues,
+        purchaseId,
+      ]);
+
+      return purchaseUpdatedResult.rowCount;
+    } catch (error) {
+      console.error(`Error updating purchase: ${error}`);
+      throw new Error(`An error ocurred while updating purchase`);
+    }
+  }
+
+  async destroy(purchaseId) {
+    try {
+      const queryDelete = "DELETE FROM purchase WHERE id = $1";
+      const purchaseDestroyed = await connection.query(queryDelete, [
+        purchaseId,
+      ]);
+
+      return purchaseDestroyed;
+    } catch (error) {
+      console.error(`Error deleting purchase: ${error}`);
+      throw new Error("An error ocurred while deleting ");
+    }
+  }
 }
 
 export default new PurchaseModels();

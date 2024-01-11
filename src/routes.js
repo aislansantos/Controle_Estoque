@@ -7,7 +7,7 @@ import productUnitsController from "./app/controllers/registrations/ProductUnits
 import productsController from "./app/controllers/registrations/ProductsController";
 import saleController from "./app/controllers/movements/SalesController";
 import itemsSaleController from "./app/controllers/movements/ItensSalesController";
-import PurchasesController from "./app/controllers/movements/PurchasesController";
+import purchasesController from "./app/controllers/movements/PurchasesController";
 
 const routes = Router();
 
@@ -92,13 +92,13 @@ routes.patch(
 routes.delete("/sales/:salesId/items_sales/:id", itemsSaleController.destroy);
 
 // Purchase
-routes.get("/purchases/", PurchasesController.index);
-routes.get("/purchases/:id", PurchasesController.show);
-// routes.get("/purchases", saleController.create);
-// routes.get("/purchases", saleController.update);
-// routes.get("/purchases", saleController.destroy);
+routes.get("/purchases/", purchasesController.index);
+routes.get("/purchases/:id", purchasesController.show);
+routes.post("/purchases", purchasesController.create);
+routes.put("/purchases/:id", purchasesController.update);
+routes.delete("/purchases/:id", purchasesController.destroy);
 
 // Items Purchase
-routes.get("/purchases/:purchaseId/itensPurchase", PurchasesController.index);
+// routes.get("/purchases/:purchaseId/itensPurchase", purchasesController.index);
 
 export default routes;

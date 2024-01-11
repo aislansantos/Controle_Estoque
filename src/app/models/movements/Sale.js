@@ -34,7 +34,7 @@ class SaleModels {
     }
   }
 
-  async show(id) {
+  async show(saleId) {
     try {
       // Consulta principal
       const query = `
@@ -71,11 +71,11 @@ class SaleModels {
         INNER JOIN sale sa ON si.fk_sale_id = sa.id
         WHERE si.fk_sale_id = $1;`;
 
-      const saleResult = await connection.query(query, [id]);
+      const saleResult = await connection.query(query, [saleId]);
 
       if (saleResult.rows.length > 0) {
         // Continue com o processamento apenas se houver resultados
-        const saleItemResult = await connection.query(queryItens, [id]);
+        const saleItemResult = await connection.query(queryItens, [saleId]);
         const saleItem = saleItemResult.rows;
 
         // Certifique-se de que saleResult.rows[0] está definido antes de acessar e modificar suas propriedades
@@ -123,10 +123,9 @@ class SaleModels {
     }
   }
 
-  async update(id, sale) {
+  async update(saleId, updatedSaleData) {
     try {
-      const updates = sale;
-      const updateQuery = Object.keys(updates)
+      const updateQuery = Object.keys(updatedSaleData)
         .map(
           (key, index) =>
             `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase()} = $${
@@ -134,25 +133,28 @@ class SaleModels {
             }`
         )
         .join(", ");
-      const updateValues = Object.values(sale);
+      const updateValues = Object.values(updatedSaleData);
       const query = `
         UPDATE sale
         SET  ${updateQuery}
         WHERE id = $${updateValues.length + 1}
         `;
-      const saleUpdated = await connection.query(query, [...updateValues, id]);
+      const saleUpdatedResult = await connection.query(query, [
+        ...updateValues,
+        saleId,
+      ]);
 
-      return saleUpdated.rowCount;
+      return saleUpdatedResult.rowCount;
     } catch (error) {
       console.error("Error updating sale:", error);
       throw new Error("An error occurred while updating sale.");
     }
   }
 
-  async destroy(id) {
+  async destroy(saleId) {
     try {
       const query = "DELETE FROM sale WHERE id = $1";
-      const saleDestroyed = await connection.query(query, [id]);
+      const saleDestroyed = await connection.query(query, [saleId]);
 
       return saleDestroyed;
     } catch (error) {

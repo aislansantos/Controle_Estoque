@@ -23,11 +23,43 @@ class PuchaseController {
     }
   }
 
-  //   async create(req, res) {}
+  async create(req, res) {
+    try {
+      const { body } = req;
+      await purchaseModels.create(body);
+      return res.status(201).json({ criado: body.orderNumber });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 
-  //   async update(req, res) {}
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const { body } = req;
 
-  //   async destroy(req, res) {}
+      // console.log(id);
+      // console.log(body);
+
+      const purchaseUpdate = await purchaseModels.update(id, body);
+      return res.status(200).json({ purchaseUpdate, id_purchase: id });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async destroy(req, res) {
+    try {
+      const { id } = req.params;
+      await purchaseModels.destroy(id);
+      return res.status(204).json();
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 
 export default new PuchaseController();

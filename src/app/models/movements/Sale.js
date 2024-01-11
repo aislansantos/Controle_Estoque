@@ -4,13 +4,13 @@ import connection from "../../../config/Connection";
 class SaleModels {
   async index() {
     try {
-      const query = `
+      const querySelect = `
       SELECT
-      sa.id,
-      sa.order_number,
-      sa.sale_order_ps,
-      sa.order_date,
-      sa.release_date,
+        sa.id,
+        sa.order_number,
+        sa.sale_order_ps,
+        sa.order_date,
+        sa.release_date,
         sa.expiration_date,
         cu.id AS id_customer,
         cu.name AS customer,
@@ -25,7 +25,7 @@ class SaleModels {
         FROM sale_item
         GROUP BY fk_sale_id
         ) si ON si.fk_sale_id = sa.id`;
-      const sales = await connection.query(query);
+      const sales = await connection.query(querySelect);
 
       return sales.rows;
     } catch (error) {
@@ -60,7 +60,10 @@ class SaleModels {
 
       // Consulta de itens
       const queryItens = `
-        SELECT pr.id, pr.description as product, si.quantity_item, si.unitary_value, si.total_value
+        SELECT pr.id,
+        pr.description as product,
+        si.quantity_item, si.unitary_value,
+        si.total_value
         FROM sale_item si
         INNER JOIN product pr ON si.fk_product_id = pr.id
         INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id

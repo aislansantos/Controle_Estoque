@@ -21,6 +21,12 @@ class SuppliersController {
       const { id } = req.params;
       const supplier = await SuppliersService.show(id);
 
+      if (Array.isArray(supplier) && supplier.length === 0) {
+        return res
+          .status(404)
+          .json({ status: "error", message: messages.supplierNotFound });
+      }
+
       return res.status(200).json(supplier);
     } catch (error) {
       console.log(error);

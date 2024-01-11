@@ -224,3 +224,71 @@ COMMENT ON COLUMN sale_item.unitary_value IS 'Valor unitário do produto';
 COMMENT ON COLUMN sale_item.total_value IS 'Valor total do item de venda';
 COMMENT ON COLUMN sale_item.fk_sale_id IS 'Chave estrangeira para a tabela de vendas';
 COMMENT ON COLUMN sale_item.fk_product_id IS 'Chave estrangeira para a tabela de produtos';
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Tabela para armazenar informações de compras
+CREATE TABLE purchase (
+  -- Identificador único da compra
+  id SERIAL PRIMARY KEY,
+  -- Número da ordem de compra
+  order_number INTEGER NOT NULL,
+  -- Observação da ordem de compra
+  purchase_order_ps VARCHAR(255),
+  -- Data da ordem
+  order_date TIMESTAMP NOT NULL,
+  -- Data de liberação
+  release_date TIMESTAMP NOT NULL,
+  -- Data de expiração
+  expiration_date TIMESTAMP NOT NULL,
+  -- Identificador do cliente associado à compra
+  fk_supplier_id INTEGER REFERENCES supplier(id) NOT NULL
+);
+
+-- Índices para consultas rápidas
+CREATE INDEX idx_supplier_supplier ON purchase (fk_supplier_id);
+
+-- Restrição para garantir que o número da compra é único para cada fornecedor
+ALTER TABLE purchase
+ADD CONSTRAINT uc_purchase_order_customer UNIQUE (order_number, fk_supplier_id);
+
+-- Comentários para documentar a tabela e colunas
+COMMENT ON TABLE purchase IS 'Tabela para armazenar informações de compras';
+COMMENT ON COLUMN purchase.order_number IS 'Número da ordem de compras';
+COMMENT ON COLUMN purchase.purchase_order_ps IS 'Observação da ordem de compras';
+COMMENT ON COLUMN purchase.order_date IS 'Data da ordem';
+COMMENT ON COLUMN purchase.release_date IS 'Data de liberação';
+COMMENT ON COLUMN purchase.expiration_date IS 'Data de expiração';
+COMMENT ON COLUMN purchase.fk_supplier_id IS 'Identificador do fornecedor associado à venda (referência à tabela supplier)';
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Tabela para armazenar itens de compra
+CREATE TABLE purchase_item (
+  -- Identificador único do item de compra
+  id SERIAL PRIMARY KEY,
+  -- Quantidade do produto comprado
+  quantity_item INTEGER NOT NULL,
+  -- Valor unitário do produto
+  unitary_value DECIMAL(10, 2) NOT NULL,
+  -- Valor total do item de compra
+  total_value DECIMAL(10, 2) NOT NULL,
+  -- Chave estrangeira referenciando a tabela de compras
+  fk_purchase_id INTEGER REFERENCES purchase(id) ON DELETE CASCADE NOT NULL,
+  -- Chave estrangeira referenciando a tabela de produtos
+  fk_product_id INTEGER REFERENCES product(id) ON DELETE CASCADE NOT NULL
+);
+
+-- Índices para otimização de consultas
+CREATE INDEX idx_purchase_item_fk_purchase_id ON purchase_item (fk_purchase_id);
+CREATE INDEX idx_purchase_item_fk_product_id ON purchase_item (fk_product_id);
+
+-- Comentários adicionais para documentar a tabela e colunas
+COMMENT ON TABLE purchase_item IS 'Tabela para armazenar itens de compra';
+COMMENT ON COLUMN purchase_item.id IS 'Identificador único do item de compra';
+COMMENT ON COLUMN purchase_item.quantity_item IS 'Quantidade do produto comprado';
+COMMENT ON COLUMN purchase_item.unitary_value IS 'Valor unitário do produto';
+COMMENT ON COLUMN purchase_item.total_value IS 'Valor total do item de compra';
+COMMENT ON COLUMN purchase_item.fk_purchase_id IS 'Chave estrangeira para a tabela de compras';
+COMMENT ON COLUMN purchase_item.fk_product_id IS 'Chave estrangeira para a tabela de produtos';

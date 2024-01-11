@@ -22,7 +22,7 @@ class CustomersController {
       const { id } = req.params;
       const customer = await customerService.show(id);
 
-      if (!customer) {
+      if (Array.isArray(customer) && customer.length === 0) {
         return res
           .status(404)
           .json({ status: "error", message: messages.customerNotFound });

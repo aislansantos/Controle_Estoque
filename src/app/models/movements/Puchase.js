@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import itemsPurchase from "./ItemsPurchase";
 import connection from "../../../config/Connection";
 
 class PurchaseModels {

@@ -4,14 +4,22 @@ class ItemSaleModels {
   async index(salesId) {
     try {
       const query = `
-    SELECT si.id AS id_product_sale,pr.id AS id_product_cad, pr.description, pu.description AS unit, si.quantity_item, si.unitary_value, si.total_value, pc.description AS category
-    FROM sale_item si
-    INNER JOIN product pr ON pr.id = fk_product_id
-    INNER JOIN product_category pc ON pr.fk_id_category = pc.id
-    INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id
-    WHERE fk_sale_id = $1`;
-      const itemsSales = await connection.query(query, [salesId]);
-      return itemsSales.rows;
+        SELECT
+          si.id AS id_product_sale,
+          pr.id AS id_product_cad,
+          pr.description,
+          pru.description AS unit,
+          si.quantity_item,
+          si.unitary_value,
+          si.total_value,
+          pc.description AS category
+        FROM sale_item si
+        INNER JOIN product pr ON pr.id = fk_product_id
+        INNER JOIN product_category pc ON pr.fk_id_category = pc.id
+        INNER JOIN product_unit pru ON pr.fk_id_unit = pru.id
+        WHERE fk_sale_id = $1`;
+      const itemsSale = await connection.query(query, [salesId]);
+      return itemsSale.rows;
     } catch (error) {
       console.error("Error fetching items sale:", error);
       throw new Error("An error occurred while fetching items sale.");
@@ -132,7 +140,6 @@ class ItemSaleModels {
       if (oldProductResult.rows.length === 0) {
         throw new Error("Sale item not found.");
       }
-
       const { fk_product_id: oldProductId, quantity_item: oldQuantity } =
         oldProductResult.rows[0];
 

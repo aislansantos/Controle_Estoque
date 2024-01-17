@@ -147,9 +147,8 @@ CREATE INDEX idx_product_description ON product (description);
 COMMENT ON TABLE product IS 'Tabela para armazenar informações de produtos';
 COMMENT ON COLUMN product.description IS 'Descrição do produto';
 COMMENT ON COLUMN product.amount IS 'Quantidade do produto';
-COMMENT ON COLUMN product.id_unit IS 'Identificador da unidade do produto (referência à tabela product_unit)';
-COMMENT ON COLUMN product.id_category IS 'Identificador da categoria do produto (referência à tabela product_category)';
-
+COMMENT ON COLUMN product.fk_id_unit IS 'Identificador da unidade do produto (referência à tabela product_unit)';
+COMMENT ON COLUMN product.fk_id_category IS 'Identificador da categoria do produto (referência à tabela product_category)';
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 

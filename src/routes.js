@@ -8,6 +8,7 @@ import productsController from "./app/controllers/registrations/ProductsControll
 import saleController from "./app/controllers/movements/SalesController";
 import itemsSaleController from "./app/controllers/movements/ItensSalesController";
 import purchasesController from "./app/controllers/movements/PurchasesController";
+import itemsPurchaseController from "./app/controllers/movements/itemsPurchaseController";
 
 const routes = Router();
 
@@ -99,6 +100,9 @@ routes.put("/purchases/:id", purchasesController.update);
 routes.delete("/purchases/:id", purchasesController.destroy);
 
 // Items Purchase
-// routes.get("/purchases/:purchaseId/itensPurchase", purchasesController.index);
+routes.get(
+  "/purchases/:purchaseId/itensPurchase",
+  itemsPurchaseController.index
+);
 
 export default routes;

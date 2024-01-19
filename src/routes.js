@@ -42,12 +42,12 @@ routes.get("/products/categories/:id", productCategoriesController.show);
 routes.post(
   "/products/categories",
   express.json(),
-  productCategoriesController.create
+  productCategoriesController.create,
 );
 routes.put(
   "/products/categories/:id",
   express.json(),
-  productCategoriesController.update
+  productCategoriesController.update,
 );
 routes.delete("/products/categories/:id", productCategoriesController.destroy);
 
@@ -58,7 +58,7 @@ routes.post("/products/units", express.json(), productUnitsController.create);
 routes.put(
   "/products/units/:id",
   express.json(),
-  productUnitsController.update
+  productUnitsController.update,
 );
 routes.delete("/products/units/:id", productUnitsController.destroy);
 
@@ -83,26 +83,35 @@ routes.get("/sales/:salesId/items_sales/:id", itemsSaleController.show);
 routes.post(
   "/sales/:salesId/items_sales",
   express.json(),
-  itemsSaleController.create
+  itemsSaleController.create,
 );
 routes.patch(
   "/sales/:salesId/items_sales/:id",
   express.json(),
-  itemsSaleController.update
+  itemsSaleController.update,
 );
 routes.delete("/sales/:salesId/items_sales/:id", itemsSaleController.destroy);
 
 // Purchase
 routes.get("/purchases/", purchasesController.index);
 routes.get("/purchases/:id", purchasesController.show);
-routes.post("/purchases", purchasesController.create);
-routes.put("/purchases/:id", purchasesController.update);
+routes.post("/purchases", express.json(), purchasesController.create);
+routes.put("/purchases/:id", express.json(), purchasesController.update);
 routes.delete("/purchases/:id", purchasesController.destroy);
 
 // Items Purchase
 routes.get(
-  "/purchases/:purchaseId/itensPurchase",
-  itemsPurchaseController.index
+  "/purchases/:purchaseId/itemsPurchase",
+  itemsPurchaseController.index,
+);
+routes.get(
+  "/purchases/:purchaseId/itemsPurchase/:id",
+  itemsPurchaseController.show,
+);
+routes.post(
+  "/purchases/:purchaseId/itemsPurchase",
+  express.json(),
+  itemsPurchaseController.create,
 );
 
 export default routes;

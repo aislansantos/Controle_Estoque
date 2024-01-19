@@ -42,7 +42,7 @@ class ItemSaleModels {
     INNER JOIN product pr ON fk_product_id = pr.id
     INNER JOIN product_category pc ON pr.fk_id_category = pc.id
     INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id
-    WHERE fk_sale_id =$1 AND si.id =$2 `;
+    WHERE fk_sale_id = $1 AND si.id = $2 `;
       const itemSales = await connection.query(query, [salesId, ItemSaleId]);
 
       return itemSales.rows;
@@ -52,14 +52,14 @@ class ItemSaleModels {
     }
   }
 
-  async create(salesId, itenVenda) {
+  async create(salesId, itemSale) {
     try {
-      const query = `
+      const queryCreate = `
       INSERT INTO sale_item (quantity_item, unitary_value, total_value, fk_sale_id, fk_product_id)
       VALUES ($1, $2, $3, $4, $5)`;
-      const { quantityItem, unitaryValue, fkProductId } = itenVenda;
+      const { quantityItem, unitaryValue, fkProductId } = itemSale;
       const totalValue = quantityItem * unitaryValue;
-      const itemSalesCreated = await connection.query(query, [
+      const itemSalesCreated = await connection.query(queryCreate, [
         quantityItem,
         unitaryValue,
         totalValue,
@@ -158,7 +158,7 @@ class ItemSaleModels {
         WHERE id = $1`;
       const amountProductAdjust = await connection.query(
         queryAmountProductAdjust,
-        [oldProductId]
+        [oldProductId],
       );
 
       if (amountProductAdjust.rows.length === 0) {

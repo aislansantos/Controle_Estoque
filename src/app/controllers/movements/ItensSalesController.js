@@ -28,6 +28,7 @@ class ItensSalesController {
     try {
       const { salesId } = req.params;
       const { body } = req;
+
       await itemsSaleModels.create(salesId, body);
 
       return res.status(201).json({ criado: body });

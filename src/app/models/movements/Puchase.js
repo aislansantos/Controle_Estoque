@@ -53,13 +53,12 @@ class PurchaseModels {
     WHERE pu.id = $1
     ORDER BY pu.id`;
 
-
       const purchaseResult = await connection.query(querySelectPurchase, [
         purchaseId,
       ]);
 
       if (purchaseResult.rows.length > 0) {
-        const purchaseItem = await itemsPurchaseModels.index(purchaseId)
+        const purchaseItem = await itemsPurchaseModels.index(purchaseId);
 
         purchaseResult.rows[0].purchaseItems = purchaseItem;
         return purchaseResult.rows;
@@ -110,7 +109,7 @@ class PurchaseModels {
           (key, index) =>
             `${key
               .replace(/([a-z])([A-Z])/g, "$1_$2")
-              .toLocaleLowerCase()} = $${index + 1}`
+              .toLocaleLowerCase()} = $${index + 1}`,
         )
         .join(", ");
 

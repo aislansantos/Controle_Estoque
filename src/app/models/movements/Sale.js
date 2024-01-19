@@ -2,7 +2,6 @@ import { DateTime } from "luxon"; //! essa biblioteca permite alterar as configu
 import connection from "../../../config/Connection";
 import itemsSalesModels from "./ItemsSale";
 
-
 class SaleModels {
   async index() {
     try {
@@ -61,7 +60,6 @@ class SaleModels {
         WHERE sa.id = $1
         ORDER BY sa.id;`;
 
-
       const saleResult = await connection.query(querySelectSale, [saleId]);
 
       if (saleResult.rows.length > 0) {
@@ -118,7 +116,7 @@ class SaleModels {
           (key, index) =>
             `${key.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase()} = $${
               index + 1
-            }`
+            }`,
         )
         .join(", ");
       const updateValues = Object.values(updatedSaleData);

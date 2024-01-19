@@ -26,16 +26,24 @@ class ItemSaleModels {
     }
   }
 
-  async show(salesId, id) {
+  async show(salesId, ItemSaleId) {
     try {
       const query = `
-    SELECT si.id AS id_product_sale, pr.id AS id_product_cad, pr.description, pu.description AS unit, si.quantity_item, si.unitary_value, si.total_value, pc.description AS category
+    SELECT
+      si.id AS id_product_sale,
+      pr.id AS id_product_cad,
+      pr.description,
+      pu.description AS unit,
+      si.quantity_item,
+      si.unitary_value,
+      si.total_value,
+      pc.description AS category
     FROM sale_item si
     INNER JOIN product pr ON fk_product_id = pr.id
     INNER JOIN product_category pc ON pr.fk_id_category = pc.id
     INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id
     WHERE fk_sale_id =$1 AND si.id =$2 `;
-      const itemSales = await connection.query(query, [salesId, id]);
+      const itemSales = await connection.query(query, [salesId, ItemSaleId]);
 
       return itemSales.rows;
     } catch (error) {

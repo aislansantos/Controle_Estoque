@@ -1,5 +1,7 @@
 import { DateTime } from "luxon"; //! essa biblioteca permite alterar as configurações de UTC para colocar a hora de São Paulo.
 import connection from "../../../config/Connection";
+import itemsSalesModels from "./ItemsSale";
+
 
 class SaleModels {
   async index() {
@@ -16,7 +18,7 @@ class SaleModels {
         cu.name AS customer,
         se.id AS id_seller,
         se.name AS seller,
-        COALESCE(total_sale, 0) AS total_sale
+      COALESCE(total_sale, 0) AS total_sale
       FROM sale sa
       INNER JOIN customer cu ON sa.fk_customer_id = cu.id
       INNER JOIN seller se ON sa.fk_seller_id = se.id
@@ -24,7 +26,8 @@ class SaleModels {
         SELECT fk_sale_id, SUM(total_value) AS total_sale
         FROM sale_item
         GROUP BY fk_sale_id
-        ) si ON si.fk_sale_id = sa.id`;
+      ) si ON si.fk_sale_id = sa.id`;
+
       const sales = await connection.query(querySelect);
 
       return sales.rows;
@@ -37,7 +40,7 @@ class SaleModels {
   async show(saleId) {
     try {
       // Consulta principal
-      const query = `
+      const querySelectSale = `
         SELECT
           DISTINCT ON (sa.id)
           sa.id,
@@ -58,27 +61,12 @@ class SaleModels {
         WHERE sa.id = $1
         ORDER BY sa.id;`;
 
-      // Consulta de itens
-      const queryItens = `
-        SELECT pr.id,
-        pr.description as product,
-        si.quantity_item, si.unitary_value,
-        si.total_value
-        FROM sale_item si
-        INNER JOIN product pr ON si.fk_product_id = pr.id
-        INNER JOIN product_unit pu ON pr.fk_id_unit = pu.id
-        INNER JOIN product_category pc ON pr.fk_id_category = pc.id
-        INNER JOIN sale sa ON si.fk_sale_id = sa.id
-        WHERE si.fk_sale_id = $1;`;
 
-      const saleResult = await connection.query(query, [saleId]);
+      const saleResult = await connection.query(querySelectSale, [saleId]);
 
       if (saleResult.rows.length > 0) {
-        // Continue com o processamento apenas se houver resultados
-        const saleItemResult = await connection.query(queryItens, [saleId]);
-        const saleItem = saleItemResult.rows;
+        const saleItem = await itemsSalesModels.index(saleId);
 
-        // Certifique-se de que saleResult.rows[0] está definido antes de acessar e modificar suas propriedades
         saleResult.rows[0].saleItems = saleItem;
         return saleResult.rows;
       }

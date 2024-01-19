@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
-import itemsPurchase from "./ItemsPurchase";
 import connection from "../../../config/Connection";
+import itemsPurchaseModels from "./ItemsPurchase";
 
 class PurchaseModels {
   async index() {
@@ -14,10 +14,15 @@ class PurchaseModels {
         pu.release_date,
         pu.expiration_date,
         su.id AS id_supplier,
-        su.name AS supplier
-        --COALESCE(total_purchase, 0) AS total_purchase
+        su.name AS supplier,
+      COALESCE(total_purchase, 0) AS total_purchase
       FROM purchase pu
-      INNER JOIN supplier su ON pu.fk_supplier_id = su.id`;
+      INNER JOIN supplier su ON pu.fk_supplier_id = su.id
+      LEFT JOIN(
+        SELECT fk_purchase_id, SUM(total_value) as total_purchase
+        FROM purchase_item
+        GROUP BY fk_purchase_id
+      ) pi ON pi.fk_purchase_id = pu.id`;
 
       const purchase = await connection.query(querySelect);
 
@@ -32,6 +37,7 @@ class PurchaseModels {
     try {
       const querySelectPurchase = `
     SELECT
+      DISTINCT ON (pu.id)
       pu.id,
       pu.order_number,
       pu.purchase_order_ps,
@@ -39,20 +45,23 @@ class PurchaseModels {
       pu.release_date,
       pu.expiration_date,
       su.id AS id_supplier,
-      su.name AS supplier
-      --COALESCE(total_purchase, 0) AS total_purchase
+      su.name AS supplier,
+      COALESCE(SUM(pi.total_value) OVER (PARTITION BY pi.fk_purchase_id), 0) AS total_purchase
     FROM purchase pu
     INNER JOIN supplier su ON pu.fk_supplier_id = su.id
+    LEFT JOIN purchase_item pi ON pi.fk_purchase_id = pu.id
     WHERE pu.id = $1
     ORDER BY pu.id`;
 
-      //! Depois de implementar as pesquisar de itens, voltar e colocar os items do pedido no show
 
       const purchaseResult = await connection.query(querySelectPurchase, [
         purchaseId,
       ]);
 
       if (purchaseResult.rows.length > 0) {
+        const purchaseItem = await itemsPurchaseModels.index(purchaseId)
+
+        purchaseResult.rows[0].purchaseItems = purchaseItem;
         return purchaseResult.rows;
       }
 

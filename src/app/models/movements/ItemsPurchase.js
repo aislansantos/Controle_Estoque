@@ -5,14 +5,14 @@ class ItemPurchaseModels {
     try {
       const querySelect = `
         SELECT
-        pi.id AS id_product_purchase,
-        pr.id As id_product_cad,
-        pr.description,
-        pru.description as unit,
-        pi.quantity_item,
-        pi.unitary_value,
-        pi.total_value,
-        pc.description AS category
+          pi.id AS id_product_purchase,
+          pr.id As id_product_cad,
+          pr.description,
+          pru.description as unit,
+          pi.quantity_item,
+          pi.unitary_value,
+          pi.total_value,
+          pc.description AS category
         FROM purchase_item pi
         INNER JOIN product pr ON pr.id = fk_product_id
         INNER JOIN product_category pc ON  pr.fk_id_category = pc.id
@@ -26,7 +26,9 @@ class ItemPurchaseModels {
     }
   }
 
-  // async show() {}
+  async show(purchaseId, ItemPurchaseId) {
+    
+  }
 
   // async create() {}
 

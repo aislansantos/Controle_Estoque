@@ -1,4 +1,4 @@
-import purchaseModels from "../../models/movements/Puchase";
+import purchaseModels from '../../models/movements/Puchase';
 
 class PuchaseController {
   async index(req, res) {

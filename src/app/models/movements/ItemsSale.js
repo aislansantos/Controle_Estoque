@@ -158,7 +158,7 @@ class ItemSaleModels {
         WHERE id = $1`;
       const amountProductAdjust = await connection.query(
         queryAmountProductAdjust,
-        [oldProductId],
+        [oldProductId]
       );
 
       if (amountProductAdjust.rows.length === 0) {

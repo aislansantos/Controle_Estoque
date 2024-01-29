@@ -109,7 +109,7 @@ class PurchaseModels {
           (key, index) =>
             `${key
               .replace(/([a-z])([A-Z])/g, "$1_$2")
-              .toLocaleLowerCase()} = $${index + 1}`,
+              .toLocaleLowerCase()} = $${index + 1}`
         )
         .join(", ");
 

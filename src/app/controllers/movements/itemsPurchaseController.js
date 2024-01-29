@@ -38,9 +38,30 @@ class ItemsPurchaseController {
     }
   }
 
-  // async update(req, res) {}
+  async update(req, res) {
+    try {
+      const { purchaseId, id } = req.params;
+      const { body } = req;
 
-  // async destroy(req, res) {}
+      await itemsPurchaseModels.update(body, purchaseId, id);
+
+      return res.json();
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async destroy(req, res) {
+    try {
+      const { purchaseId, id } = req.params;
+
+      await itemsPurchaseModels.destroy(purchaseId, id);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 
 export default new ItemsPurchaseController();

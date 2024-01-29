@@ -113,5 +113,10 @@ routes.post(
   express.json(),
   itemsPurchaseController.create
 );
+routes.patch(
+  "/purchases/:purchaseId/itemsPurchase/:id",
+  express.json(),
+  itemsPurchaseController.update
+);
 
 export default routes;

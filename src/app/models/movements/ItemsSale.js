@@ -93,6 +93,7 @@ class ItemSaleModels {
       // Inicializa as variáveis de campos e valores para a atualização
       const updateFields = [];
       const updateValues = [];
+
       // Adiciona campos e valores apenas se estiverem presentes no corpo da requisição
       if (quantityItem !== undefined) {
         updateFields.push(`quantity_item = $${updateValues.length + 1}`);
@@ -216,8 +217,10 @@ class ItemSaleModels {
 
   async destroy(saleId, id) {
     try {
-      const query = `DELETE FROM sale_item WHERE fk_sale_id = $1 AND id = $2`;
-      const saleItemDestoyed = connection.query(query, [saleId, id]);
+      const queryDestroy = `
+        DELETE FROM sale_item
+        WHERE fk_sale_id = $1 AND id = $2`;
+      const saleItemDestoyed = connection.query(queryDestroy, [saleId, id]);
       return saleItemDestoyed;
     } catch (error) {
       console.error("Error deleting item sale:", error);

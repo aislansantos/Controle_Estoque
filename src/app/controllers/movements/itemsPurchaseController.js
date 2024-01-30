@@ -57,6 +57,7 @@ class ItemsPurchaseController {
       const { purchaseId, id } = req.params;
 
       await itemsPurchaseModels.destroy(purchaseId, id);
+      return res.status(204).json();
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Internal server error" });

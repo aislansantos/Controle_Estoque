@@ -118,5 +118,9 @@ routes.patch(
   express.json(),
   itemsPurchaseController.update
 );
+routes.delete(
+  "/purchases/:purchaseId/itemsPurchase/:id",
+  itemsPurchaseController.destroy
+);
 
 export default routes;

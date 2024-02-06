@@ -33,7 +33,7 @@ routes.delete("/suppliers/:id", suppliersController.destroy);
 routes.get("/sellers", sellers.index);
 routes.get("/sellers/:id", sellers.show);
 routes.post("/sellers", express.json(), sellers.create);
-routes.put("/sellers/:id", express.json(), sellers.update);
+routes.patch("/sellers/:id", express.json(), sellers.update);
 routes.delete("/sellers/:id", sellers.destroy);
 
 // Categories of Products

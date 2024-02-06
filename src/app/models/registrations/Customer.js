@@ -45,7 +45,8 @@ class CustomerModels {
     try {
       const query = `
       INSERT INTO customer (name, email, city)
-      VALUES  ($1,$2,$3)`;
+      VALUES  ($1,$2,$3)
+      RETURNING id, name, email, city`;
 
       const { name, email, city } = customer;
       const createdCustomer = await connection.query(query, [

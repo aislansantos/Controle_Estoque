@@ -40,9 +40,9 @@ class CustomersController {
   async create(req, res) {
     try {
       const { body } = req;
-      console.log(body.name);
-      await customerService.create(body);
-      return res.status(201).json({ data: body });
+      const createdCustomer = await customerService.create(body);
+      const customerId = createdCustomer.id;
+      return res.status(201).json({ data: { ...createdCustomer, customerId } });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: messages.internalServerError });

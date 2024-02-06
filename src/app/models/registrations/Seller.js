@@ -35,7 +35,8 @@ class SellerModels {
     try {
       const query = `
       INSERT
-      INTO seller (name, email, branch) VALUES ($1, $2, $3)`;
+      INTO seller (name, email, branch) VALUES ($1, $2, $3)
+      RETURNING id, name, email, branch`;
       const { name, email, branch } = seller;
       const sellerCreated = await connection.query(query, [
         name,
@@ -55,7 +56,7 @@ class SellerModels {
       const query = `
       UPDATE seller
       SET name = $1, email=$2, branch = $3
-      WHERE id = $3`;
+      WHERE id = $4`;
       const { name, email, branch } = seller;
       const sellerUpdated = await connection.query(query, [
         name,

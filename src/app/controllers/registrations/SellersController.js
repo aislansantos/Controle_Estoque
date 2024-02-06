@@ -15,7 +15,7 @@ class SellersController {
     try {
       const { id } = req.params;
       const seller = await sellerModels.show(id);
-      return res.status(200).json(seller);
+      return res.status(200).json({ data: seller });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Internal server error" });

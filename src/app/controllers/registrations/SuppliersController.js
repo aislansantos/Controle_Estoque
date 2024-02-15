@@ -27,10 +27,12 @@ class SuppliersController {
           .json({ status: "error", message: messages.supplierNotFound });
       }
 
-      return res.status(200).json(supplier);
+      return res.status(200).json({ data: supplier });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: messages.internalServerError });
+      return res
+        .status(500)
+        .json({ status: "error", message: messages.internalServerError });
     }
   }
 
